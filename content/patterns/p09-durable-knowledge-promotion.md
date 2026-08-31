@@ -1,0 +1,48 @@
+---
+title: P09 — Durable Knowledge Promotion
+description: Promote useful discoveries and decisions; let transient runtime noise expire.
+type: Pattern
+section: patterns
+order: 39
+readTime: 5 min read
+slug: patterns/p09-durable-knowledge-promotion
+---
+
+## Problem
+
+Keeping every log, trace, and intermediate artifact forever creates noise and cost. Keeping nothing makes future Runs repeat mistakes.
+
+## Context
+
+Runs discover constraints, make decisions, and produce evidence of varying long-term value.
+
+## Pattern
+
+Classify outputs. Promote durable knowledge, provenance, and decisions into reviewed workspace context; retain telemetry only for its operational lifetime.
+
+## Diagram
+
+```text
+Run output → classify → durable knowledge / Event
+                    └→ transient telemetry → expire
+```
+
+## Example
+
+A Run discovers that a service must start before contract tests. Promote that constraint to a policy or example; do not commit the full process log.
+
+## Trade-offs
+
+Promotion keeps the knowledge base useful and portable. It requires judgment and a path for correcting stale decisions.
+
+## Failure modes
+
+Everything is promoted, nothing is promoted, or a discovery becomes “truth” without review.
+
+## Extension points
+
+Markdown pull requests, structured events, SQLite, a knowledge graph, or an external KB.
+
+## When not to use
+
+Do not create durable records for disposable debugging noise.

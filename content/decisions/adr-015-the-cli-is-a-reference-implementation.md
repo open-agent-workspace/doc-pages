@@ -1,0 +1,25 @@
+---
+title: ADR-015 — The CLI Is a Reference Implementation
+description: The reference CLI demonstrates the patterns but does not define their specification.
+type: ADR
+section: decisions
+order: 65
+readTime: 2 min read
+slug: decisions/adr-015-the-cli-is-a-reference-implementation
+---
+
+## Status
+
+Accepted
+
+## Context
+
+Users need a concrete implementation while the architecture must remain open to alternatives.
+
+## Decision
+
+Document the CLI as one reference mapping from patterns to primitives, not as the only correct implementation.
+
+## Consequences
+
+Docker, another agent provider, a daemon, or a different knowledge store can remain compatible with the patterns.

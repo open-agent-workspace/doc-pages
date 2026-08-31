@@ -1,0 +1,11 @@
+{
+  "name": "agentic-engineering-workspace-docs",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node dev-server.mjs",
+    "check": "node build.mjs --check"
+  }
+}
