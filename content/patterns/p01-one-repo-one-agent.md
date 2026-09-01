@@ -14,11 +14,16 @@ An agent needs a clear unit of work and a clear handoff. An unbounded process wi
 
 ## Context
 
-Use this for a small coding task with one repository and no need for concurrent mutation.
+Use this for a small coding task with one repository and no need for concurrent
+mutation. Start the interactive driver at the Git control-repository root;
+the selected repository can live under `repos/` without becoming part of the
+control repository’s history.
 
 ## Pattern
 
-Create one Run, give it one objective and one mutation scope, then validate its Candidate before integration.
+Create one Run, give it one objective and one mutation scope, then validate its
+Candidate before integration. `ws run` creates the isolated worktree for the
+managed repository; the driver remains in the workspace root.
 
 ## Diagram
 
@@ -28,9 +33,10 @@ request → Run → isolated checkout → validate → Candidate → integrate
 
 ## Example
 
-```text
+```yaml
 profile: interactive-coder
 target: api-service
+path: repos/api-service
 objective: add request ID middleware
 result: commit + test evidence
 ```
@@ -49,4 +55,6 @@ Swap the Agent Provider, execution provider, or integration policy without chang
 
 ## When not to use
 
-Do not add a workspace coordinator just to run a single, short, human-supervised command.
+Do not add bounded coordination for a single, short, human-supervised command
+unless the workspace root and its generated guidance are already useful to the
+team.

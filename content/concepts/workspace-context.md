@@ -10,11 +10,26 @@ slug: concepts/workspace-context
 
 ## Definition
 
-Workspace Context is the durable, shared material that Runs can read: policies, coding standards, architectural context, repository relationships, and reusable skills.
+Workspace Context is the durable, shared material that Runs can read: policies,
+coding standards, architectural context, repository relationships, and reusable
+skills. In the coding-agent workspace convention, the control repository keeps
+this material in `.workspace/context/`, with generated root `AGENTS.md` and
+workspace skills under `.agents/skills/` providing the driver agent’s entry
+point.
 
 ## Why it exists
 
-Without durable context, every Run rediscovers the same constraints and decisions. Context turns repeated work into cumulative engineering knowledge.
+Without durable context, every Run rediscovers the same constraints and
+decisions. Context turns repeated work into cumulative engineering knowledge,
+and a root guide lets an interactive coding agent discover that knowledge from
+the workspace project root.
+
+## Driver versus Run context
+
+The interactive driver reads the generated `AGENTS.md` and `.agents/skills/`
+from the control repository. A bounded `ws run` receives the selected context
+repositories and workspace context needed for one mutation, but does not write
+back to the control repository or context-only checkouts.
 
 ## Shared or private?
 
@@ -22,7 +37,11 @@ Context is shared and reviewable. A Run’s unverified discovery is private unti
 
 ## Default implementation
 
-Markdown and structured files tracked in Git are the reference implementation. SQLite, a knowledge graph, or an external knowledge base can serve the same purpose.
+Markdown and structured files tracked in the control repository are the
+reference implementation. `ws generate` derives `AGENTS.md` and
+`.agents/skills/` from the manifest and context. SQLite, a knowledge graph, or
+an external knowledge base can serve the same purpose, provided the driver and
+Run boundaries remain explicit.
 
 ## Trade-offs
 

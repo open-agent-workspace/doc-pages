@@ -10,7 +10,11 @@ slug: start-here/continuous-engineering
 
 ## The shift
 
-An interactive coding Run starts with a human request. A housekeeper, dependency maintainer, or bug fixer starts with a schedule, trigger, or queue. The execution model can remain the same.
+An interactive coding Run starts with a human request from the workspace-root
+driver. A housekeeper, dependency maintainer, or bug fixer starts with a
+schedule, trigger, or queue. The execution model can remain the same: each
+role invokes a bounded `ws run` against an isolated managed-repository
+worktree.
 
 ```text
 schedule / trigger
@@ -20,7 +24,10 @@ bounded Run → inspect → propose → validate → checkpoint
         └──────────── next Run reads ─────────┘
 ```
 
-Continuity comes from durable context and checkpoints. It does not require keeping the same process, worktree, or agent session alive forever.
+Continuity comes from durable context and checkpoints in the Git control
+repository. It does not require keeping the same process, worktree, or agent
+session alive forever. `AGENTS.md` and `.agents/skills/` are regenerated when
+the workspace map or shared conventions change.
 
 ## Roles, not personalities
 

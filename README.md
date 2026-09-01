@@ -1,14 +1,17 @@
 # Agentic Engineering Workspace Documentation
 
-An implementation-independent field guide for building workspaces where coding agents can work safely, concurrently, and continuously.
+An implementation-independent field guide for building true coding-agent
+workspaces where agents can work safely, concurrently, and continuously.
 
 The site is Markdown-first and statically generated. The `content/` tree is the source of truth; `site/` is the generated GitHub Pages artifact.
 
-The architecture is intentionally independent of any particular CLI. In the
-full workspace checkout, the optional concrete implementation lives beside
-this repository at `../reference-implmentation/` (the directory name is
-historical), and its deterministic dogfood fixture is at
-`../example-workspace/`.
+The architecture is intentionally independent of any particular CLI. The
+recommended physical convention is a Git-managed workspace control repository
+opened as the coding agent’s project root. Independently Git-managed
+repositories are checked out below its ignored `repos/` directory. In the
+dogfood checkout, this repository is therefore expected at
+`repos/doc-pages/`, alongside `repos/reference-implmentation/` and
+`repos/example-workspace/`.
 
 ## Local development
 
@@ -43,22 +46,33 @@ Each Markdown page starts with front matter for `title`, `description`, `type`, 
 
 ## Verify the reference mapping
 
-To exercise the optional implementation, initialize the sibling fixture with a
-base commit before asking it to create a worktree:
+To exercise the optional implementation, run it from the Git control
+repository—the directory you open in the coding agent. `ws init` creates the
+durable `.workspace/` metadata, and `ws generate` creates the root
+`AGENTS.md` and workspace skills under `.agents/skills/`:
 
 ```sh
-cd ../example-workspace
-git branch -M main
-git add .
-git commit -m "Create example workspace fixture"
-node ../reference-implmentation/bin/ws.js run coder "Add a greeting" --no-integrate
+cd /path/to/dogfood-workspace
+ws init
+ws repo clone https://example.com/example-workspace.git \
+  --name example --role primary --path repos/example-workspace
+ws repo clone https://example.com/reference-implmentation.git \
+  --name reference --role implementation --path repos/reference-implmentation
+ws repo clone https://example.com/doc-pages.git \
+  --name docs --role documentation --path repos/doc-pages
+ws generate
+ws run coder "Add a greeting" --repo example \
+  --context-repo reference --context-repo docs --no-integrate
 ```
 
-The CLI records a bounded Run and Candidate while the canonical checkout stays
-clean. See [Reference Implementation](content/reference/index.md) for the
-provider mapping, inspection/integration flow, and explicit V1 limitations.
-The implementation can be verified independently with `pnpm test` (or
-`pnpm check`) from `reference-implmentation/`.
+The CLI records a bounded Run and Candidate while the canonical nested
+repository stays clean. `ws repo sync [name]` materializes missing URL-backed
+checkouts and leaves existing ones unchanged; `ws repo add` registers a local
+Git checkout and infers its `origin` URL unless `--url` is supplied. See
+[Reference Implementation](content/reference/index.md) for the provider
+mapping, inspection/integration flow, and explicit V1 limitations. The
+implementation can be verified independently with `pnpm test` (or
+`pnpm check`) from `repos/reference-implmentation/`.
 
 ## Deployment
 

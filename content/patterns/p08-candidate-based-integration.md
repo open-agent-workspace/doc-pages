@@ -14,7 +14,10 @@ An agent that writes code should not automatically become the authority that pub
 
 ## Context
 
-Candidates need validation, review, compatibility checks, or repository-specific policy.
+Candidates need validation, review, compatibility checks, or repository-specific
+policy. The workspace-root driver performs that handoff; the control repository
+itself is not the mutation target unless the task explicitly changes workspace
+configuration.
 
 ## Pattern
 
@@ -28,7 +31,10 @@ Run → Candidate + evidence → validate → review/policy → canonical histor
 
 ## Example
 
-The reference flow is rebase, run tests, inspect the diff, and merge. A pull request workflow is equally valid.
+The reference flow is `ws inspect <candidate-id>`, rebase, run tests, and
+`ws integrate <candidate-id>`. A pull request workflow is equally valid. For a
+multi-repository change, create and integrate one Candidate per independent
+repository.
 
 ## Trade-offs
 

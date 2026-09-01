@@ -14,7 +14,10 @@ Product work and maintenance happen together, but maintenance must not disturb a
 
 ## Context
 
-Interactive coders, dependency maintainers, and resource housekeepers operate in the same workspace.
+Interactive coders, dependency maintainers, and resource housekeepers operate
+in the same Git control-repository workspace. The interactive driver stays at
+the root while every role receives its own bounded Run and managed-repository
+worktree.
 
 ## Pattern
 
@@ -32,7 +35,9 @@ interactive Run /                    \ housekeeper Run
 
 ## Example
 
-The coding agent changes a feature in one worktree while the housekeeper audits stale resources in another. Both publish evidence; neither edits the other’s checkout.
+The coding agent changes a feature in one worktree while the housekeeper audits
+stale resources in another. Both publish evidence; neither edits the control
+repository, the other Run’s checkout, or a context-only repository.
 
 ## Trade-offs
 

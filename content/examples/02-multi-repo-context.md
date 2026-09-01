@@ -11,20 +11,32 @@ slug: examples/02-multi-repo-context
 ## Architecture
 
 ```text
-client contract ─┐
-deployment notes ─┼─read→ Run →write→ api-service Candidate
-api source ───────┘
+workspace-root driver
+        │
+        ├─ repos/web-client   ─┐
+        ├─ repos/infra        ─┼─read→ bounded Run →write→ repos/api-service Candidate
+        └─ repos/api-service ──┘
 ```
+
+All three checkouts are independently Git-managed and ignored by the control
+repository’s `repos/` entry. The manifest records each checkout’s path and Git
+URL.
 
 ## Workspace config
 
 ```yaml
 repositories:
   - name: web-client
+    path: repos/web-client
+    url: https://github.com/example/web-client.git
     access: read
   - name: api-service
+    path: repos/api-service
+    url: https://github.com/example/api-service.git
     access: read-write
   - name: infra
+    path: repos/infra
+    url: https://github.com/example/infra.git
     access: read
 ```
 
@@ -35,10 +47,21 @@ The Run inspects the client and infrastructure contracts, publishes Intent for `
 ## Example commands
 
 ```sh
-workspace context add web-client --read-only
-workspace context add infra --read-only
-workspace run create --write api-service
+ws init
+ws repo clone https://github.com/example/web-client.git \
+  --name web-client --role secondary --path repos/web-client
+ws repo clone https://github.com/example/infra.git \
+  --name infra --role secondary --path repos/infra
+ws repo clone https://github.com/example/api-service.git \
+  --name api-service --role primary --path repos/api-service
+ws generate
+ws run coder "Update the API contract" --repo api-service \
+  --context-repo web-client --context-repo infra --no-integrate
 ```
+
+If a checkout already exists, use `ws repo add <path> [--url <git-url>]`.
+Use `ws repo sync [name]` later to materialize a missing URL-backed checkout;
+an existing checkout is deliberately left unchanged.
 
 ## Trade-offs
 

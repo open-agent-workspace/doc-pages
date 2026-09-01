@@ -14,7 +14,7 @@ Patterns are easier to reuse when their boundaries are visible. These ADRs recor
 
 ## Decision catalogue
 
-- [ADR-001 — Workspace Represents a System, Not a Folder](adr-001-workspace-represents-a-system-not-a-folder)
+- [ADR-001 — Workspace Has a Git Control-Repository Root](adr-001-workspace-represents-a-system-not-a-folder)
 - [ADR-002 — Repository Boundaries Remain Independent](adr-002-repository-boundaries-remain-independent)
 - [ADR-003 — Context Scope May Exceed Mutation Scope](adr-003-context-scope-may-exceed-mutation-scope)
 - [ADR-004 — Git Worktree Is the Default Run Isolation](adr-004-git-worktree-is-the-default-run-isolation)

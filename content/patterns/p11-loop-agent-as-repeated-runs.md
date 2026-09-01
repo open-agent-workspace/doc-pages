@@ -28,7 +28,9 @@ checkpoint → Run 1 → checkpoint → Run 2 → checkpoint → …
 
 ## Example
 
-An upgrade agent records packages inspected, blockers, and next action. A later Run resumes from that durable state in a fresh worktree.
+An upgrade agent records packages inspected, blockers, and next action in the
+control repository. A later Run, started by the workspace-root driver, resumes
+from that durable state in a fresh managed-repository worktree.
 
 ## Trade-offs
 

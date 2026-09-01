@@ -11,8 +11,11 @@ slug: examples/01-single-repo-single-agent
 ## Architecture
 
 ```text
-human → Run → worktree → tests → Candidate → human integrates
+workspace-root driver → ws run → repo worktree → tests → Candidate → integrate
 ```
+
+The workspace root is a Git control repository. The managed repository remains
+an independent checkout below the ignored `repos/` directory.
 
 ## Workspace config
 
@@ -21,6 +24,12 @@ workspace: checkout-lab
 repository: api-service
 profile: interactive-coder
 write_scope: api-service
+
+repositories:
+  - name: api-service
+    path: repos/api-service
+    url: https://github.com/example/api-service.git
+    role: primary
 ```
 
 ## Expected lifecycle
@@ -33,10 +42,16 @@ write_scope: api-service
 ## Example commands
 
 ```sh
-git worktree add .runs/run-001 -b run/001 main
-agent run --cwd .runs/run-001 --task "add request IDs"
-git -C .runs/run-001 diff --check
+ws init
+ws repo clone https://github.com/example/api-service.git \
+  --name api-service --role primary --path repos/api-service
+ws generate
+ws run coder "Add request IDs" --repo api-service --no-integrate
 ```
+
+The interactive agent runs from the workspace root and uses generated
+`AGENTS.md`/`.agents/skills/`; the bounded task agent runs in the isolated
+worktree and returns a Candidate.
 
 ## Trade-offs
 

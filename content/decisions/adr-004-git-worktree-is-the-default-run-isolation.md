@@ -14,11 +14,15 @@ Accepted
 
 ## Context
 
-Concurrent Runs need independent checkouts without requiring a heavyweight sandbox.
+Concurrent Runs need independent checkouts without requiring a heavyweight
+sandbox. The interactive driver uses the Git control-repository root, while a
+bounded Run must not mutate the canonical checkout under `repos/`.
 
 ## Decision
 
-Use a Git worktree and branch per Run as the default execution provider.
+Use a Git worktree and branch per Run as the default execution provider. Place
+provider worktrees in disposable `.workspace/runtime/` state, not in the
+control repository’s tracked files or in a context-only checkout.
 
 ## Alternatives considered
 

@@ -14,7 +14,10 @@ Separate files do not stop two Runs from binding the same port, reusing a databa
 
 ## Context
 
-Runs start local servers, test databases, browsers, or background services.
+Runs start local servers, test databases, browsers, or background services. The
+interactive driver remains at the workspace control-repository root while
+each bounded Run owns resources associated with its isolated managed-repo
+worktree.
 
 ## Pattern
 
@@ -35,6 +38,10 @@ Run A → port 4311
 Run B → port 4312
 Run end → stop process → release port
 ```
+
+The reference CLI records these resources under `.workspace/runtime/`, which
+is ignored by the control repository. `ws status` exposes active ownership and
+`ws cleanup` reconciles completed or orphaned Run resources.
 
 ## Trade-offs
 

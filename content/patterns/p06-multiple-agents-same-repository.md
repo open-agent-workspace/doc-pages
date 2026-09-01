@@ -14,7 +14,9 @@ Two agents in one checkout create file, branch, dependency, and generated-artifa
 
 ## Context
 
-Independent tasks target the same repository at the same time.
+Independent tasks target the same repository at the same time. The
+workspace-root driver coordinates both Runs, while the canonical checkout
+remains an independently Git-managed repository under `repos/`.
 
 ## Pattern
 
@@ -30,7 +32,17 @@ same repo
 
 ## Example
 
-Run A addresses a bug while Run B upgrades dependencies. Neither edits the other’s files or branch.
+Run A addresses a bug while Run B upgrades dependencies. Neither edits the
+other’s files or branch:
+
+```sh
+ws run coder "Fix the authentication bug" --repo api --no-integrate &
+ws run coder "Upgrade the dependency" --repo api --no-integrate &
+wait
+```
+
+The driver inspects both Candidates and integrates them through the repository
+policy.
 
 ## Trade-offs
 

@@ -14,7 +14,7 @@ The patterns use a compact set of terms. Each term describes a boundary, a lifec
 
 | Concept | Short definition |
 | --- | --- |
-| Workspace | Logical boundary for related repos, context, policies, Runs, and resources. |
+| Workspace | Git control-repository root for related repos, context, policies, Runs, and resources. |
 | Repository | Independent Git history, CI, release, and engineering boundary. |
 | Agent Profile | A reusable definition of an engineering role. |
 | Run | One bounded agent execution. |

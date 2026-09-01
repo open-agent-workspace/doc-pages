@@ -11,6 +11,7 @@ slug: examples/04-housekeeper-and-coding-agent
 ## Architecture
 
 ```text
+             workspace-root driver + generated skills
                     shared workspace context
                    /                         \
 coding Run → feature Candidate       housekeeper Run → report/Candidate
@@ -18,6 +19,10 @@ coding Run → feature Candidate       housekeeper Run → report/Candidate
                    \                         /
                      separate integration policy
 ```
+
+The control repository is the one folder opened by the interactive driver.
+Coding and housekeeping Runs work in isolated worktrees of independently
+managed repositories below `repos/`; neither Run edits the driver checkout.
 
 ## Workspace config
 
@@ -36,10 +41,16 @@ The coding Run changes a feature. The scheduled Run inspects stale worktrees and
 ## Example commands
 
 ```sh
-workspace run create --profile interactive-coder --write api-service
-workspace schedule run --profile housekeeper --once
-workspace resource list --owned-by housekeeper
+ws generate
+ws run coder "Implement the feature" --repo api-service --no-integrate
+ws run housekeeper "Audit stale worktrees and dependencies" \
+  --repo api-service --no-integrate
+ws status
 ```
+
+An external scheduler can invoke the housekeeper command from the workspace
+root. The generated `AGENTS.md` and `.agents/skills/` remain durable control
+repository guidance; runtime leases and worktrees remain disposable.
 
 ## Trade-offs
 

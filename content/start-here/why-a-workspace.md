@@ -10,9 +10,14 @@ slug: start-here/why-a-workspace
 
 ## Definition
 
-A workspace is a logical boundary around related repositories, shared engineering knowledge, policies, skills, resources, and agent Runs.
+A workspace is a logical boundary around related repositories, shared
+engineering knowledge, policies, skills, resources, and agent Runs. The
+recommended coding-agent convention gives that boundary a concrete home: a
+Git-managed control repository opened as the project root.
 
-It is not necessarily a folder. It is a way to describe the system an engineering team is working on, even when that system is split across independent repositories.
+The managed repositories remain independent Git checkouts below the ignored
+`repos/` directory. This lets the coding agent work from one folder without
+turning the system into a monorepo.
 
 ## The problem with “just a repository”
 
@@ -31,15 +36,49 @@ The repository still owns its history and release lifecycle. It simply stops bei
 The workspace describes shared context and coordination. A repository remains the primary mutation and integration boundary.
 
 ```text
-workspace
-├── related repositories
-├── policies + skills
-├── durable knowledge
-├── active Runs
-└── runtime resources
+workspace/                         # Git control repository / agent root
+├── AGENTS.md                      # generated root instructions
+├── .agents/skills/                # generated workspace skills
+├── .workspace/                    # manifest, context, history, runtime
+├── .gitignore                     # ignores repos/ and runtime state
+└── repos/                         # ignored independent Git repositories
+    ├── service/
+    └── documentation/
 ```
 
-This separation lets teams add coordination without turning every repository into a distributed system.
+The control repository owns the workspace map and durable guidance. Each
+nested repository owns its own source, branches, CI, release lifecycle, and
+integration. This separation lets teams add coordination without turning every
+repository into a distributed system.
+
+## One project root, two execution scopes
+
+Open the control-repository root in the interactive coding agent. The
+generated `AGENTS.md` points the driver to `.workspace/`, `.agents/skills/`,
+and the `ws` workflow. The driver can clone or sync repositories, update
+workspace knowledge, regenerate guidance, and start bounded Runs.
+
+`ws run` then gives a task agent an isolated worktree for one mutation
+repository. It can read selected context repositories, but its Candidate and
+integration path belong to the declared write target. The driver and the
+bounded Run therefore share one workspace map without sharing a writable
+checkout.
+
+## Bootstrap
+
+```sh
+mkdir my-workspace && cd my-workspace
+ws init
+ws repo clone <git-url> --name service --role primary --path repos/service
+ws repo clone <git-url> --name docs --role documentation --path repos/docs
+ws generate
+git add AGENTS.md .agents .workspace .gitignore
+git commit -m "Initialize coding-agent workspace"
+```
+
+Use `ws repo add <path> [--url <git-url>]` for an existing checkout and
+`ws repo sync [name]` when you explicitly want to materialize a missing URL-backed
+repository. No submodule is needed for this convention.
 
 ## Trade-offs
 

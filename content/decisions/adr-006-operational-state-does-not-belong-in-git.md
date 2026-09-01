@@ -18,7 +18,10 @@ Runtime state changes frequently and may contain machine-local paths, PIDs, or s
 
 ## Decision
 
-Keep operational state in a local state engine or coordinator, separate from Git-tracked knowledge.
+Keep operational state in the control repository’s ignored
+`.workspace/runtime/` directory and local state engine, separate from
+Git-tracked knowledge. The managed repositories below ignored `repos/` remain
+independent and must not be used as the runtime state store.
 
 ## Consequences
 

@@ -14,7 +14,9 @@ Dependencies, generated files, stale worktrees, and local resources need care ev
 
 ## Context
 
-A workspace needs repeated housekeeping without an immortal agent session.
+A workspace needs repeated housekeeping without an immortal agent session. The
+housekeeper is invoked from the Git control-repository root and works through a
+bounded `ws run` against a managed repository or its runtime resources.
 
 ## Pattern
 
@@ -28,7 +30,10 @@ schedule → inspect → bounded change → validate → Candidate / report
 
 ## Example
 
-Weekly Run: inspect stale worktrees, report active resources, and propose cleanup. A separate policy decides whether deletion is allowed.
+Weekly Run: from the workspace root, inspect stale worktrees, report active
+resources, and propose cleanup. A separate policy decides whether deletion is
+allowed; the ignored `repos/` checkouts are never treated as disposable control
+repository files.
 
 ## Trade-offs
 

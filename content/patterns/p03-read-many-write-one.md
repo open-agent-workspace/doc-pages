@@ -14,7 +14,9 @@ A repository-local change may depend on contracts, schemas, or deployment behavi
 
 ## Context
 
-Use when system understanding crosses repository boundaries but the Candidate belongs primarily to one repository.
+Use when system understanding crosses repository boundaries but the Candidate
+belongs primarily to one repository. The workspace root provides one driver
+context while the managed checkouts remain below ignored `repos/`.
 
 ## Pattern
 
@@ -30,7 +32,17 @@ read:  web-app ─┐
 
 ## Example
 
-An agent changing an API handler can read the client contract and infrastructure health checks, but only creates a Candidate in `api-service`.
+An agent changing an API handler can read the client contract and infrastructure
+health checks, but only creates a Candidate in `api-service`:
+
+```sh
+ws run coder "Align the API handler with the client contract" \
+  --repo api-service \
+  --context-repo web-client --context-repo infra --no-integrate
+```
+
+The repository entries carry workspace-relative paths and Git URLs so the
+driver can clone or sync context explicitly.
 
 ## Trade-offs
 

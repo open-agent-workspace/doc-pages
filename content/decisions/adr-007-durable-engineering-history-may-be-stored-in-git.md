@@ -18,7 +18,10 @@ Policies, decisions, and architecture notes need review, portability, and proven
 
 ## Decision
 
-Allow durable engineering knowledge to live in Markdown or structured Git-tracked files.
+Allow durable engineering knowledge to live in Markdown or structured
+Git-tracked files in the control repository. Generated root `AGENTS.md` and
+`.agents/skills/` are part of that reviewable workspace guidance; runtime logs,
+leases, and nested `repos/` checkouts remain ignored.
 
 ## Consequences
 

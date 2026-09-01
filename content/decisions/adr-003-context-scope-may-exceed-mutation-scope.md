@@ -18,7 +18,11 @@ Understanding a change may require related repositories, but editing them all cr
 
 ## Decision
 
-Support Read Many / Write One as a first-class pattern. A Run must declare or otherwise make its mutation scope explicit.
+Support Read Many / Write One as a first-class pattern. A Run must declare or
+otherwise make its mutation scope explicit. The workspace-root driver may
+select context repositories from the manifest, but `ws run` creates a writable
+worktree only for the selected mutation repository; context repositories are
+materialized read-only for that Run.
 
 ## Alternatives considered
 
@@ -26,7 +30,9 @@ Clone and edit the entire system or limit every Run to one repository’s local 
 
 ## Consequences
 
-Agents can reason across boundaries while Candidates remain reviewable.
+Agents can reason across boundaries while Candidates remain reviewable. The
+control repository’s `AGENTS.md` and `.agents/skills/` can teach the driver the
+map without widening a Run’s write scope.
 
 ## Trade-offs
 

@@ -14,7 +14,10 @@ Keeping every log, trace, and intermediate artifact forever creates noise and co
 
 ## Context
 
-Runs discover constraints, make decisions, and produce evidence of varying long-term value.
+Runs discover constraints, make decisions, and produce evidence of varying
+long-term value. Durable workspace knowledge belongs in the Git control
+repository, alongside the manifest and generated driver guidance; runtime
+logs and nested repository checkouts do not.
 
 ## Pattern
 
@@ -29,7 +32,10 @@ Run output → classify → durable knowledge / Event
 
 ## Example
 
-A Run discovers that a service must start before contract tests. Promote that constraint to a policy or example; do not commit the full process log.
+A Run discovers that a service must start before contract tests. Promote that
+constraint to `.workspace/context/policies.md` or an example, then run
+`ws generate` if the driver guidance or a workspace skill should change; do not
+commit the full process log.
 
 ## Trade-offs
 

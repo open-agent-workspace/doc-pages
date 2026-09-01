@@ -14,7 +14,10 @@ An agent can overwrite human changes, leave generated files behind, or make it u
 
 ## Context
 
-Multiple active Runs or a human working alongside an agent require separate mutation surfaces.
+Multiple active Runs or a human working alongside an agent require separate
+mutation surfaces. In the workspace convention, the human/driver checkout is
+the Git control repository root and each canonical managed repository is below
+`repos/`.
 
 ## Pattern
 
@@ -23,7 +26,7 @@ Create an isolated Git worktree per Run. The Run owns its branch, working direct
 ## Diagram
 
 ```text
-canonical checkout (human / integration)
+workspace root (driver) → repos/api (canonical / integration)
               │
       ┌───────┼────────┐
       ▼       ▼        ▼
@@ -33,10 +36,10 @@ canonical checkout (human / integration)
 
 ## Example
 
-```text
-git worktree add .runs/run-a -b run/run-a main
-agent --cwd .runs/run-a
-git worktree remove .runs/run-a
+```sh
+ws run coder "Update the API" --repo api --no-integrate
+# equivalent provider worktree: .workspace/runtime/worktrees/<run-id>/api
+ws cleanup
 ```
 
 ## Trade-offs

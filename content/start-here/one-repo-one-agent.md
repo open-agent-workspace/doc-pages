@@ -10,14 +10,20 @@ slug: start-here/one-repo-one-agent
 
 ## The minimal pattern
 
-Give one agent one repository and one bounded task. The agent reads the relevant context, makes a change in an isolated Run, validates it, and returns a Candidate.
+Open a Git control-repository workspace as the coding agent’s project root.
+Give one bounded Run one repository and one task. The interactive driver reads
+the workspace guidance, then `ws run` starts the task agent in an isolated
+worktree of the selected repository. The agent reads the relevant context,
+validates its change, and returns a Candidate.
 
 ```text
 human request
      ↓
-bounded Run → isolated checkout → validation
-                                     ↓
-                                  Candidate
+interactive driver at workspace root
+     ↓
+bounded Run → isolated repo worktree → validation
+                                             ↓
+                                          Candidate
 ```
 
 The useful constraint is not the number of agents. It is the bounded lifecycle:
@@ -27,6 +33,18 @@ The useful constraint is not the number of agents. It is the bounded lifecycle:
 3. isolate its mutation scope;
 4. validate the result;
 5. promote or discard the Candidate.
+
+## Example commands
+
+```sh
+ws init
+ws repo clone <git-url> --name api --role primary --path repos/api
+ws generate
+ws run coder "Add request IDs" --repo api --no-integrate
+```
+
+The root control repository is not the Run’s mutation repository. It remains
+available for the driver to update workspace context and inspect the Candidate.
 
 ## What belongs in a Run?
 

@@ -10,21 +10,28 @@ slug: start-here/from-one-agent-to-many
 
 ## Isolation before concurrency
 
-Two agents working in the same checkout are not two independent workers. Their file changes, generated artifacts, processes, and assumptions can collide.
+Two agents working in the same checkout are not two independent workers. Their
+file changes, generated artifacts, processes, and assumptions can collide. The
+workspace root is the interactive driver’s checkout; it is not a shared
+mutation checkout for bounded Runs.
 
 Give each active Run its own execution environment. A Git worktree is the default reference implementation, but Docker, devcontainers, VMs, or another provider can implement the same isolation principle.
 
 ```text
-canonical repo
+workspace control repo / driver
      │
-     ├── Run A / worktree-a / feature
-     ├── Run B / worktree-b / bugfix
-     └── Run C / worktree-c / housekeeping
+     └── repos/api (canonical managed repo)
+             ├── Run A / worktree-a / feature
+             ├── Run B / worktree-b / bugfix
+             └── Run C / worktree-c / housekeeping
 ```
 
 ## Coordination is separate
 
-Isolation prevents routine file collisions. It does not decide whether two changes are compatible. Agents share minimal coordination information—usually Intent and status—while their full plans remain private by default.
+Isolation prevents routine file collisions. It does not decide whether two
+changes are compatible. The driver shares minimal coordination information—
+usually Intent and status—while Run plans remain private by default. Generated
+`AGENTS.md` and `.agents/skills/` tell the driver how to maintain this split.
 
 ## The integration seam
 

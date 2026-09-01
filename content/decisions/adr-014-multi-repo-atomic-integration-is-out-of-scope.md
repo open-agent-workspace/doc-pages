@@ -18,7 +18,11 @@ Related repositories may need coordinated changes, but atomic multi-repo commits
 
 ## Decision
 
-Produce separate Candidates and use an explicit orchestration or release process when multiple repositories must move together.
+Produce separate Candidates and use an explicit orchestration or release
+process when multiple repositories must move together. Nesting independent
+checkouts under an ignored `repos/` directory improves discoverability but
+does not change this boundary; submodules are not used as an implicit atomic
+integration mechanism.
 
 ## Consequences
 

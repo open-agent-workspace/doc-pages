@@ -18,7 +18,11 @@ Systems often combine repositories with different owners, release cadences, and 
 
 ## Decision
 
-Keep Git history, CI, release lifecycle, and integration policy at the repository boundary.
+Keep Git history, CI, release lifecycle, and integration policy at the
+repository boundary. Repositories may be physically nested below the ignored
+`repos/` directory of the Git control repository, but remain independently
+cloned and managed. Record each one with a workspace-relative `path` and Git
+`url`; do not use submodules by default.
 
 ## Alternatives considered
 
@@ -26,7 +30,10 @@ Move to a monorepo or implement a multi-repo transaction layer.
 
 ## Consequences
 
-Adoption remains incremental and repository-native. Cross-repository changes need explicit coordination.
+Adoption remains incremental and repository-native. `ws repo clone` and
+`ws repo sync` provide convenience without merging histories; `ws repo add`
+can register an existing checkout and infer its remote URL. Cross-repository
+changes need explicit coordination.
 
 ## Trade-offs
 

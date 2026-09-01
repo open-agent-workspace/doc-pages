@@ -11,7 +11,9 @@ slug: examples/03-two-concurrent-agents
 ## Architecture
 
 ```text
-                 api-service
+      workspace-root driver
+               │
+           repos/api-service
                 /           \
 feature Run / worktree   bug Run / worktree
        ↓ Candidate A       ↓ Candidate B
@@ -19,14 +21,20 @@ feature Run / worktree   bug Run / worktree
                  validation + integration
 ```
 
+The driver coordinates from the control repository root. Both bounded Runs
+target the same independent nested repository, but each receives its own Git
+worktree and branch.
+
 ## Workspace config
 
 ```yaml
 runs:
   - id: feature-12
     write_scope: api-service
+    repository_path: repos/api-service
   - id: bug-44
     write_scope: api-service
+    repository_path: repos/api-service
 ```
 
 ## Expected lifecycle
@@ -36,8 +44,12 @@ Both Runs publish Intent, use different branches and worktrees, validate indepen
 ## Example commands
 
 ```sh
-git worktree add .runs/feature-12 -b run/feature-12 main
-git worktree add .runs/bug-44 -b run/bug-44 main
+ws run coder "Implement feature 12" --repo api-service --no-integrate &
+ws run coder "Fix bug 44" --repo api-service --no-integrate &
+wait
+ws runs
+ws inspect <candidate-a-or-run-id>
+ws inspect <candidate-b-or-run-id>
 ```
 
 ## Trade-offs
