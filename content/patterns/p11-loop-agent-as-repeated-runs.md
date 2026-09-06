@@ -14,27 +14,35 @@ Long-lived processes accumulate stale state, are hard to recover, and make owner
 
 ## Context
 
-An agent needs to continue a multi-step objective across time or triggers.
+An agent needs to continue a multi-step objective across time or triggers. The
+loop definition belongs to a durable Workstream; each execution may use a new
+disposable Task Workspace.
 
 ## Pattern
 
-Represent the loop as repeated bounded Runs. Each Run reads a checkpoint, performs one safe slice, and writes the next checkpoint.
+Represent the loop as repeated bounded Runs. Each Run reads Workstream goal,
+plan, state, and history; performs one safe slice in a Task Workspace; and
+writes the next semantic checkpoint back to the Workstream.
 
 ## Diagram
 
 ```text
-checkpoint → Run 1 → checkpoint → Run 2 → checkpoint → …
+Workstream loop definition
+          ↓
+checkpoint → Task 1 / Run 1 → checkpoint → Task 2 / Run 2 → …
 ```
 
 ## Example
 
-An upgrade agent records packages inspected, blockers, and next action in the
-control repository. A later Run, started by the workspace-root driver, resumes
-from that durable state in a fresh managed-repository worktree.
+An upgrade loop records packages inspected, blockers, and next action in its
+Workstream state. A later Planner/Task Resolver invocation resumes from that
+durable state in a fresh Task Workspace and managed-repository worktree.
 
 ## Trade-offs
 
-Recovery and cleanup are easier. Checkpoints need a schema and can become stale or overly detailed.
+Recovery and cleanup are easier, and deleting a Task Workspace does not delete
+the loop’s intent or history. Checkpoints need a schema and can become stale
+or overly detailed.
 
 ## Failure modes
 

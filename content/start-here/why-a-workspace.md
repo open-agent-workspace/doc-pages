@@ -10,10 +10,11 @@ slug: start-here/why-a-workspace
 
 ## Definition
 
-A workspace is a logical boundary around related repositories, shared
-engineering knowledge, policies, skills, resources, and agent Runs. The
-recommended coding-agent convention gives that boundary a concrete home: a
-Git-managed control repository opened as the project root.
+A workspace is a family of scopes around architecture, intent, execution, and
+deployed state. Read [Workspace Scopes](../concepts/workspace-scopes) for the
+four explicit boundaries. The recommended coding-agent convention gives the
+System Workspace a concrete V1 home: a Git-managed control repository opened
+as the project root.
 
 The managed repositories remain independent Git checkouts below the ignored
 `repos/` directory. This lets the coding agent work from one folder without
@@ -51,7 +52,7 @@ nested repository owns its own source, branches, CI, release lifecycle, and
 integration. This separation lets teams add coordination without turning every
 repository into a distributed system.
 
-## One project root, two execution scopes
+## One project root, four scopes
 
 Open the control-repository root in the interactive coding agent. The
 generated `AGENTS.md` points the driver to `.workspace/`, `.agents/skills/`,
@@ -60,9 +61,11 @@ workspace knowledge, regenerate guidance, and start bounded Runs.
 
 `ws run` then gives a task agent an isolated worktree for one mutation
 repository. It can read selected context repositories, but its Candidate and
-integration path belong to the declared write target. The driver and the
-bounded Run therefore share one workspace map without sharing a writable
-checkout.
+integration path belong to the declared write target. In the fuller model,
+the Planner reads Workstream intent, the Task Resolver selects System
+resources, and the Run executes in a disposable Task Workspace. A separate
+Runtime Workspace will describe canonical deployed state; the current V1 CLI
+does not implement that layer.
 
 ## Bootstrap
 

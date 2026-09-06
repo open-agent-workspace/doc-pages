@@ -23,6 +23,24 @@ logs and nested repository checkouts do not.
 
 Classify outputs. Promote durable knowledge, provenance, and decisions into reviewed workspace context; retain telemetry only for its operational lifetime.
 
+Promotion has an intentional ladder rather than one undifferentiated memory:
+
+```text
+Task observation
+      ↓ review
+Workstream learning
+      ↓ repeated evidence
+System pattern
+      ↓ adopted preference
+System convention / policy
+      ↓ explicit scope
+Global preference
+```
+
+An observation should not become a policy merely because one Run recorded it.
+Keep the source Task, Workstream, Run, and review decision attached to every
+promotion so later agents can understand provenance and correct stale guidance.
+
 ## Diagram
 
 ```text
@@ -39,7 +57,8 @@ commit the full process log.
 
 ## Trade-offs
 
-Promotion keeps the knowledge base useful and portable. It requires judgment and a path for correcting stale decisions.
+Promotion keeps the knowledge base useful and portable. It requires judgment,
+scope-aware storage, provenance, and a path for correcting stale decisions.
 
 ## Failure modes
 

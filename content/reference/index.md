@@ -16,12 +16,17 @@ separate `@agentic-workspace/core` and `@agentic-workspace/cli` packages:
 
 | Open pattern | Reference primitive |
 | --- | --- |
-| Workspace | Git control repository root, `.workspace/workspace.yaml`, generated `AGENTS.md`, and `.agents/skills/` |
+| System Workspace (V1 slice) | Git control repository root, `.workspace/workspace.yaml`, generated `AGENTS.md`, and `.agents/skills/` |
+| Workstream | Not implemented as a first-class object; durable context and run history are the closest V1 materialization |
+| Task Workspace (V1 slice) | Per-Run Git worktree, selected repository snapshots, context files, and runtime working state |
+| Runtime Workspace | Not implemented as canonical deployed state |
+| System / Layer / Resource catalog | Declaration-only `system/*.yaml` registries; `ws discover`, `ws validate`, and topology status |
+| Planner / Task Resolver | Not implemented; the interactive driver and explicit CLI options provide a narrower flow |
 | Bounded Run | `RunOrchestrator` and SQLite run record |
 | Isolated Run | `GitWorktreeExecutionProvider` |
 | Operational coordination | `OperationalStore` backed by local SQLite |
 | Agent execution | `CommandAgentProvider` with argv profiles |
-| Runtime Resource | Local port/process providers |
+| Runtime Resource | Local port/process providers; this is narrower than the broad System Resource concept |
 | Candidate | Git commit or unchanged base snapshot |
 | Durable workspace knowledge | Git-tracked Markdown / YAML in the control repository |
 | Integration | Locked rebase, validation, and fast-forward merge |
@@ -33,7 +38,31 @@ created lazily for the mutation repository, and selected context repositories
 are materialized as detached commit snapshots. Integration requires the
 operational store lock, and a failed validation, rebase, or merge leaves the
 candidate worktree available for inspection. Completed Runs promote concise
-YAML history rather than full agent telemetry.
+YAML history rather than full agent telemetry. This V1 history contains useful
+repository/context snapshots, but it is not yet the full Workstream-linked Run
+Manifest described below.
+
+## Four scopes and implementation status
+
+The target architecture distinguishes:
+
+```text
+System Workspace   → topology, contracts, policies, shared learning
+Workstream         → goals, plans, loops, state, and durable intent
+Task Workspace     → disposable context and worktrees for one task
+Runtime Workspace  → canonical deployed state
+```
+
+The reference CLI currently implements the System Workspace as a Git control
+repository plus declaration-only System/Layer/Resource registries, with
+`ws discover`, `ws validate`, and topology status. It implements Task
+execution as bounded Runs with isolated worktrees and a narrow Runtime
+Resource allocator for ports/processes. It does not claim a Planner, Task
+Resolver, or canonical Runtime Workspace.
+
+PM2, Docker Compose, and Git/FS are future adapter choices for a Runtime
+Workspace. The documentation does not imply that the CLI currently supports
+Runtime Workspace `start`, `stop`, `reconcile`, or `deploy` operations.
 
 ## The relationship
 
@@ -128,6 +157,31 @@ create Run → allocate worktree/resources → invoke provider
  publish Intent                       collect evidence
      └──────────────→ Candidate → validate → integrate
 ```
+
+## Durable lineage and Run Manifest
+
+Task files and worktrees may be deleted after execution. The durable record
+should retain lineage instead:
+
+```yaml
+task: TASK-123
+workstream: agent-platform
+systems: [agent-platform]
+layers: [execution, knowledge]
+resources: [agent-runtime, event-schema]
+system_revision: c319efa
+plan_revision: 54c817
+agent: codex
+status: completed
+repos:
+  agent-runtime:
+    base: 4fa19de
+    branch: task/TASK-123
+```
+
+The current CLI records several of these ingredients—Run identity, profile,
+repository snapshots, context revision, Candidates, and Events—but does not
+yet persist this complete Workstream/Task/System manifest.
 
 ## What an implementation should make inspectable
 

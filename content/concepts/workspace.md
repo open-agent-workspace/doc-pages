@@ -1,6 +1,6 @@
 ---
 title: Workspace
-description: A logical boundary around the system context an engineering team and its agents share.
+description: A general term for scoped architecture, intent, execution, and runtime state.
 type: Concept
 section: concepts
 order: 21
@@ -10,14 +10,17 @@ slug: concepts/workspace
 
 ## Definition
 
-A Workspace groups related repositories, shared engineering knowledge, policies,
-skills, agent Runs, and runtime resources. In the reference convention it is
-also a Git-managed control repository: the directory opened as the coding
-agent’s project root.
+A Workspace is a general term, not one lifecycle boundary. Use [Workspace
+Scopes](workspace-scopes) to distinguish the durable System Workspace,
+Workstream intent, disposable Task Workspace, and canonical Runtime
+Workspace. In the reference convention, the Git-managed control repository
+is the practical root for the System Workspace and interactive driver.
 
 ## Why it exists
 
-The system an agent needs to understand can be larger than the repository it is allowed to modify. A workspace gives that context a durable name and a place for relationships to live.
+The system an agent needs to understand can be larger than the repository it is
+allowed to modify. Explicit scopes let architecture and intent outlive a task
+without making every execution share one mutable checkout.
 
 ## Physical convention
 
@@ -41,7 +44,7 @@ This layout is a convention, not a monorepo. Each entry keeps its own Git
 history, branch, CI, release lifecycle, and integration policy. Submodules are
 not required and are not the default.
 
-## Lifecycle
+## Current V1 mapping
 
 `ws init` creates or adopts the Git control-repository root. `ws repo clone`
 materializes URL-backed repositories under `repos/`, while `ws repo add`
@@ -49,8 +52,11 @@ registers an existing local checkout and records its URL when it can infer one
 from `origin`. `ws generate` refreshes the root `AGENTS.md` and
 `.agents/skills/`. Runs execute within the workspace, and durable knowledge is
 promoted back into the control repository. `ws repo sync [name]` explicitly
-materializes missing URL-backed checkouts and leaves existing ones unchanged. The workspace can
-outlive any particular Run.
+materializes missing URL-backed checkouts and leaves existing ones unchanged.
+The control repository can outlive any particular Run. It currently combines
+most System Workspace material with the V1 driver entry point; Workstream and
+canonical Runtime Workspace are documented architectural scopes that the
+reference CLI does not fully implement yet.
 
 ## Driver and bounded Run contexts
 
@@ -62,11 +68,16 @@ repositories but only returns a Candidate for its declared write target.
 
 ## Shared or private?
 
-The workspace boundary is shared. Individual plans, temporary files, and transient telemetry can remain private to a Run.
+The System Workspace boundary is shared. Workstream plans are durable intent;
+individual task plans, temporary files, and transient telemetry can remain
+private to a Task Workspace or Run.
 
 ## Durable or runtime?
 
-Relationships, policies, and promoted knowledge are durable. Processes, allocated ports, and active Run state are runtime concerns.
+Relationships, policies, and promoted knowledge are durable. Processes,
+allocated Runtime Resources, and active Run state are execution concerns. Do
+not confuse those temporary concerns with the separate Runtime Workspace that
+will describe canonical deployed state.
 
 ## Default implementation
 
@@ -84,4 +95,4 @@ abstraction for a one-off script that has no shared context.
 
 ## Related concepts
 
-[Repository](repository), [Workspace Context](workspace-context), [Run](run), and [Resource](resource).
+[Workspace Scopes](workspace-scopes), [System Model](system-model), [Repository](repository), [Workspace Context](workspace-context), [Run](run), and [Resource](resource).

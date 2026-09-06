@@ -14,18 +14,22 @@ Accepted
 
 ## Context
 
-Runtime state changes frequently and may contain machine-local paths, PIDs, or secrets.
+Task execution state changes frequently and may contain machine-local paths,
+PIDs, or secrets. It is distinct from a future Runtime Workspace manifest,
+which is canonical deployed state and may be durable.
 
 ## Decision
 
-Keep operational state in the control repository’s ignored
+Keep Task operational state in the control repository’s ignored
 `.workspace/runtime/` directory and local state engine, separate from
 Git-tracked knowledge. The managed repositories below ignored `repos/` remain
 independent and must not be used as the runtime state store.
 
 ## Consequences
 
-Repositories remain clean and portable. Operational state needs its own backup and recovery expectations.
+Repositories remain clean and portable. Task operational state needs its own
+backup and recovery expectations; a future Runtime Workspace will need an
+explicit revision and deployment policy.
 
 ## Extension path
 

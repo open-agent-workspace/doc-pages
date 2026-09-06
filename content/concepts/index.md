@@ -14,9 +14,18 @@ The patterns use a compact set of terms. Each term describes a boundary, a lifec
 
 | Concept | Short definition |
 | --- | --- |
-| Workspace | Git control-repository root for related repos, context, policies, Runs, and resources. |
+| Workspace scopes | System, Workstream, Task, and Runtime scopes with different authorities and lifetimes. |
+| System | A responsibility or product boundary in the canonical architecture. |
+| Layer | An architectural role such as capability, knowledge, observability, runtime, or experience. |
+| Resource | Any named thing that exists in the System model. |
+| Runtime Resource | An allocated port, process, namespace, or ephemeral service used by a Task or Run. |
 | Repository | Independent Git history, CI, release, and engineering boundary. |
 | Agent Profile | A reusable definition of an engineering role. |
+| Planner | A capability that turns Workstream intent into proposed next tasks. |
+| Task Resolver | A capability that composes a Task Workspace from Systems, Layers, and Resources. |
+| Workstream | Durable goals, plans, loops, state, and history for an ongoing effort. |
+| Task Workspace | Disposable execution context assembled for one task. |
+| Runtime Workspace | Canonical deployed or operational state, distinct from task execution state. |
 | Run | One bounded agent execution. |
 | Workspace Context | Shared durable knowledge available to Runs. |
 | Intent | Minimal coordination information exposed to other Runs. |
@@ -29,13 +38,15 @@ The patterns use a compact set of terms. Each term describes a boundary, a lifec
 ## A lifecycle view
 
 ```text
-Workspace Context → Run → Intent → Candidate → Integration
-                        │          │
-                        └→ Events  └→ Knowledge Proposal
+System model + Workstream intent → Planner → Task Resolver → Task Workspace
+                                                        ↓
+                                                       Run → Candidate → Integration
+                                                        ↓
+                                             lineage + learning promotion
 ```
 
 The vocabulary is intentionally implementation-independent. A local SQLite coordinator, a daemon, or an external scheduler can expose the same conceptual objects.
 
 ## Read next
 
-Start with [Workspace](workspace), then [Run](run) and [Integration](integration). The more operational terms become useful once you reach the patterns.
+Start with [Workspace Scopes](workspace-scopes) and the [System Model](system-model), then read [Run](run) and [Integration](integration). The more operational terms become useful once you reach the patterns.

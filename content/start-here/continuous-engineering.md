@@ -24,10 +24,11 @@ bounded Run → inspect → propose → validate → checkpoint
         └──────────── next Run reads ─────────┘
 ```
 
-Continuity comes from durable context and checkpoints in the Git control
-repository. It does not require keeping the same process, worktree, or agent
-session alive forever. `AGENTS.md` and `.agents/skills/` are regenerated when
-the workspace map or shared conventions change.
+Continuity comes from durable Workstream goals, loop definitions, state,
+history, and semantic checkpoints. It does not require keeping the same
+process, Task Workspace, worktree, or agent session alive forever.
+`AGENTS.md` and `.agents/skills/` are regenerated when the System Workspace
+map or shared conventions change.
 
 ## Roles, not personalities
 
@@ -39,4 +40,6 @@ Scheduled Runs should produce Candidates and evidence. They should not silently 
 
 ## The bigger picture
 
-Continuous engineering is a composition of bounded primitives: isolated execution, explicit coordination, durable knowledge promotion, and separate integration.
+Continuous engineering is a composition of bounded primitives: Planner and
+Task Resolver capabilities, isolated Task Workspace execution, explicit
+coordination, durable knowledge promotion, lineage, and separate integration.

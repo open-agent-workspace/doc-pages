@@ -22,7 +22,9 @@ retain separate histories. Their checkouts conventionally live below ignored
 ## Pattern
 
 Record each repository’s stable name, workspace-relative `path`, Git `url`,
-role, and relationships in the control-repository manifest. Use
+role, and relationships in the control-repository manifest. This is a useful
+first System Resource catalog, but it is narrower than the full
+System/Layer/Resource model. Use
 `ws repo clone` to materialize a URL-backed checkout, `ws repo add` to register
 an existing checkout, and `ws repo sync [name]` to materialize a missing one.
 Keep each repository’s lifecycle independent; do not use submodules by
@@ -58,7 +60,10 @@ repositories while writing only its declared target.
 
 ## Trade-offs
 
-System context improves orientation and discovery. Relationships need owners and can drift from reality.
+System context improves orientation and discovery. The reference CLI now has a
+declaration-only System/Layer/Resource registry and `ws discover`/`ws validate`
+surface; a future System Workspace can extend it with richer lifecycle and
+runtime adapter data. Relationships need owners and can drift from reality.
 
 ## Failure modes
 

@@ -1,6 +1,6 @@
 ---
 title: Resource
-description: A runtime dependency that must be allocated, observed, and released.
+description: Any named thing in the System model, distinct from an allocated Runtime Resource.
 type: Concept
 section: concepts
 order: 28
@@ -10,13 +10,26 @@ slug: concepts/resource
 
 ## Definition
 
-A Resource is something an active Run needs at runtime: a port, process, service, database namespace, browser profile, or other local capability.
+A Resource is any named thing that exists in the System Workspace: a
+repository, service, MCP server, skill, script, job, Docker component, UI,
+contract, knowledge base, or capability. It has an identity, kind, ownership,
+and relationships to Systems and Layers. See [System Model](system-model) for
+the broader vocabulary.
 
 ## Why it exists
 
-File isolation alone does not stop two Runs from binding the same port or terminating each other’s processes.
+The broad inventory lets agents discover architecture without guessing from
+filesystem layout. It also gives the Task Resolver stable inputs when it
+composes a Task Workspace.
 
-## Lifecycle
+## Runtime Resources
+
+A Runtime Resource is the allocated, usually temporary instance that an active
+Task or Run needs: a port, process, temporary database namespace, browser
+profile, or ephemeral service. File isolation alone does not stop two Runs
+from binding the same port or terminating each other’s processes.
+
+### Lifecycle
 
 ```text
 requested → allocated → in use → released
@@ -25,6 +38,10 @@ requested → allocated → in use → released
 
 ## Default implementation
 
-A local allocator and process registry. Stronger isolation can be provided by containers, VMs, or a remote execution provider.
+The reference CLI implements this narrow Runtime Resource slice with a local
+allocator and process registry. It also supports declaration-only System
+Resource registries and discovery/validation. Stronger isolation can be
+provided by containers, VMs, or a remote execution provider; deployed Runtime
+Workspace adapters remain future work.
 
 See [Runtime Resource Isolation](../patterns/p07-runtime-resource-isolation).

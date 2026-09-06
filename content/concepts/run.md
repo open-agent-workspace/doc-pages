@@ -10,7 +10,8 @@ slug: concepts/run
 
 ## Definition
 
-A Run is a bounded agent execution with an objective, Agent Profile, context, execution provider, lifecycle, and result.
+A Run is a bounded agent execution inside a Task Workspace, with an objective,
+Agent Profile, selected context, execution provider, lifecycle, and result.
 
 ## Why it exists
 
@@ -34,7 +35,9 @@ The Run record and selected Events may be durable. Full telemetry, logs, and eve
 
 ## Default implementation
 
-The reference CLI uses an isolated Git worktree and a command adapter for the agent provider.
+The reference CLI uses an isolated Git worktree, selected repository context,
+and a command adapter for the agent provider. It does not yet create a full
+Task Workspace from a System/Layer/Resource catalog.
 
 ## Trade-offs
 
