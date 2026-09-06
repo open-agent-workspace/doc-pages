@@ -22,11 +22,41 @@ Git worktrees prevent normal workflow collisions. They do not isolate credential
 
 ## No atomic multi-repo transaction
 
-Repositories retain independent histories. A system-wide change requires separately integrated Candidates or an additional release coordinator.
+Repositories retain independent histories. A system-wide change requires
+separately integrated Candidates or an additional release coordinator. The
+current Run mutates one repository; later multi-repository workflows must
+coordinate several Candidates and still do not imply an atomic transaction.
+
+## Discovery is not semantic search
+
+The current `ws discover` capability filters declared System/Layer/Resource
+membership. It does not infer semantic dependencies, search every repository,
+or guarantee that the best context has been found. On-demand context
+resolution is a proposed interface and must explain selections and tolerate
+unavailable unrelated repositories.
+
+## Planning and loops are external
+
+Agent Workspace consumes caller-owned Task intent. It does not own goals,
+prioritisation, schedules, retries, budgets, or durable loop state. An external
+Planner or orchestrator can invoke bounded Runs repeatedly and retain its own
+Workstream state.
+
+## Runtime Workspace is external
+
+The reference CLI does not own canonical deployed state or runtime lifecycle.
+PM2, Docker Compose, Git/FS, LocalLink, or another runtime owner must provide
+that adapter and policy. Task Runtime Resources and process cleanup should not
+be mistaken for a deployed Runtime Workspace.
 
 ## Runtime resource isolation is best effort by default
 
 Local port allocation and process tracking reduce collisions but do not provide the guarantees of containers, VMs, or a remote execution platform.
+
+## Some status paths are operational
+
+`ws status` is useful for inspection, but local SQLite initialization or schema
+migration may occur. It should not be treated as a fully read-only probe.
 
 ## Semantic conflicts cannot be completely prevented
 

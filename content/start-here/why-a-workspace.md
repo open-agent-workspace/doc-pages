@@ -34,7 +34,9 @@ The repository still owns its history and release lifecycle. It simply stops bei
 
 ## A useful separation
 
-The workspace describes shared context and coordination. A repository remains the primary mutation and integration boundary.
+The System Workspace describes shared context and coordination. A repository
+remains the primary mutation and integration boundary. Workstream intent and
+runtime deployment can belong to external owners.
 
 ```text
 workspace/                         # Git control repository / agent root
@@ -61,11 +63,12 @@ workspace knowledge, regenerate guidance, and start bounded Runs.
 
 `ws run` then gives a task agent an isolated worktree for one mutation
 repository. It can read selected context repositories, but its Candidate and
-integration path belong to the declared write target. In the fuller model,
-the Planner reads Workstream intent, the Task Resolver selects System
-resources, and the Run executes in a disposable Task Workspace. A separate
-Runtime Workspace will describe canonical deployed state; the current V1 CLI
-does not implement that layer.
+integration path belong to the declared write target. A caller may supply a
+direct objective; a separate Task object is useful for durable intent but is
+not mandatory ceremony. In the fuller ecosystem, an external Planner/Task
+Resolver may select System resources and invoke a disposable Task Workspace.
+A separate Runtime Workspace describes canonical deployed state; the current
+V1 CLI does not own that layer.
 
 ## Bootstrap
 

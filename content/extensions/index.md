@@ -24,7 +24,25 @@ The Agent Profile can adapt Codex CLI, Claude Code, Copilot CLI, Gemini CLI, Ope
 
 ## Coordinator
 
-**Default:** local process plus SQLite. A daemon, Redis, external scheduler, or another local state engine can own Run status, Intent, leases, and resource records.
+**Default:** local process plus SQLite for the current Run lifecycle. A
+daemon, Redis, external scheduler, or another local state engine may own Task
+intent, loops, retries, budgets, and orchestration. The coordinator should
+consume the versioned result/lineage boundary rather than duplicate repository
+or runtime authority.
+
+Existing candidates include `cmwen/coding-agent-orchestrator`, which already
+owns tmux sessions, queues, schedules, and filesystem state. Assess whether it
+can consume the Agent Workspace interface before extracting a new
+`agent-orchestration` repository; reuse is the default and no competing
+scheduler is implied.
+
+## Runtime Workspace adapter
+
+PM2, Docker Compose, and Git/FS can implement a Runtime Workspace owned by a
+runtime system such as LocalLink. The existing `cmwen/locallink` and
+`cmwen/locallink-workspace` repositories are compatibility candidates. This
+extension is an interface assessment, not a claim that `ws` owns service
+lifecycle or deployment.
 
 ## Integration
 
@@ -43,4 +61,6 @@ Before replacing a default, ask:
 - What new cleanup, recovery, or operational state does it introduce?
 - How will a Candidate or durable Event remain portable?
 
-The reference CLI is one path through this matrix, not a conformance test for every implementation.
+The reference CLI is one path through this matrix, not a conformance test for
+every implementation. External Planner, scheduler, loop, and runtime owners
+must remain explicit.

@@ -14,13 +14,15 @@ Dependencies, generated files, stale worktrees, and local resources need care ev
 
 ## Context
 
-A workspace needs repeated housekeeping without an immortal agent session. The
-housekeeper is invoked from the Git control-repository root and works through a
-bounded `ws run` against a managed repository or its runtime resources.
+A workspace needs repeated housekeeping without an immortal agent session. An
+external scheduler or orchestrator owns the trigger and loop state; it invokes
+a bounded `ws run` against a managed repository or selected Runtime Resources.
 
 ## Pattern
 
-Schedule a Housekeeper Agent Profile that creates bounded Runs with a narrow objective, evidence, and checkpoint.
+Have the external owner schedule a Housekeeper Agent Profile that creates
+bounded Runs with a narrow objective, evidence, and checkpoint. `ws` executes
+the supplied Task; it does not own schedules or retries.
 
 ## Diagram
 

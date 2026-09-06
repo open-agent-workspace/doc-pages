@@ -10,8 +10,9 @@ slug: concepts/run
 
 ## Definition
 
-A Run is a bounded agent execution inside a Task Workspace, with an objective,
-Agent Profile, selected context, execution provider, lifecycle, and result.
+A Run is one bounded attempt to execute caller-owned Task intent inside a Task
+Workspace, with an objective, Agent Profile, selected context, execution
+provider, lifecycle, and result.
 
 ## Why it exists
 
@@ -27,7 +28,9 @@ queued → starting → active → validating → candidate
 
 ## Shared or private?
 
-The Run’s status and Intent are shared. Its detailed plan and transient scratch state are private by default.
+The Run’s status and execution Intent are shared. The Task’s durable intent is
+owned by its caller; detailed attempt plans and transient scratch state are
+private by default.
 
 ## Durable or runtime?
 
@@ -36,8 +39,9 @@ The Run record and selected Events may be durable. Full telemetry, logs, and eve
 ## Default implementation
 
 The reference CLI uses an isolated Git worktree, selected repository context,
-and a command adapter for the agent provider. It does not yet create a full
-Task Workspace from a System/Layer/Resource catalog.
+and a command adapter for the agent provider. It can compose from declared
+System/Layer/Resource membership, but Planner and Task lifecycle ownership
+remain external.
 
 ## Trade-offs
 

@@ -20,7 +20,8 @@ context while the managed checkouts remain below ignored `repos/`.
 
 ## Pattern
 
-Declare many repositories as read context and one repository as the write target.
+Declare many repositories as selected context and one repository as the write
+target. Context expansion must never expand the write permissions.
 
 ## Diagram
 
@@ -50,7 +51,9 @@ This preserves independent repository boundaries while improving decisions. Read
 
 ## Failure modes
 
-The Run accidentally edits a read-only repository, or the context list is so broad that the task becomes unfocused.
+The Run accidentally edits a context repository, or the context list is so
+broad that the task becomes unfocused. Current context-only worktrees are
+checked after execution rather than enforceably read-only filesystem mounts.
 
 ## Extension points
 

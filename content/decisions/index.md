@@ -14,7 +14,7 @@ Patterns are easier to reuse when their boundaries are visible. These ADRs recor
 
 ## Decision catalogue
 
-- [ADR-001 — Workspace Has a Git Control-Repository Root](adr-001-workspace-represents-a-system-not-a-folder)
+- [ADR-001 — System Workspace Has a Git Control-Repository Root](adr-001-workspace-represents-a-system-not-a-folder)
 - [ADR-002 — Repository Boundaries Remain Independent](adr-002-repository-boundaries-remain-independent)
 - [ADR-003 — Context Scope May Exceed Mutation Scope](adr-003-context-scope-may-exceed-mutation-scope)
 - [ADR-004 — Git Worktree Is the Default Run Isolation](adr-004-git-worktree-is-the-default-run-isolation)
@@ -30,5 +30,6 @@ Patterns are easier to reuse when their boundaries are visible. These ADRs recor
 - [ADR-014 — Multi-Repo Atomic Integration Is Out of Scope](adr-014-multi-repo-atomic-integration-is-out-of-scope)
 - [ADR-015 — The CLI Is a Reference Implementation](adr-015-the-cli-is-a-reference-implementation)
 - [ADR-016 — Mechanisms Over Mandatory Policies](adr-016-mechanisms-over-mandatory-policies)
+- [ADR-017 — Agent Workspace Product Boundary](adr-017-agent-workspace-product-boundary)
 
 All decisions are accepted for the first documentation slice. A future decision can supersede an earlier one; the history should stay visible.

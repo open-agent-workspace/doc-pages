@@ -12,9 +12,9 @@ slug: start-here/continuous-engineering
 
 An interactive coding Run starts with a human request from the workspace-root
 driver. A housekeeper, dependency maintainer, or bug fixer starts with a
-schedule, trigger, or queue. The execution model can remain the same: each
-role invokes a bounded `ws run` against an isolated managed-repository
-worktree.
+schedule, trigger, or queue owned by an external orchestrator. The execution
+model can remain the same: each role supplies caller-owned Task intent and
+invokes a bounded `ws run` against an isolated managed-repository worktree.
 
 ```text
 schedule / trigger
@@ -25,8 +25,9 @@ bounded Run → inspect → propose → validate → checkpoint
 ```
 
 Continuity comes from durable Workstream goals, loop definitions, state,
-history, and semantic checkpoints. It does not require keeping the same
-process, Task Workspace, worktree, or agent session alive forever.
+history, and semantic checkpoints owned by the caller. It does not require
+keeping the same process, Task Workspace, worktree, or agent session alive
+forever.
 `AGENTS.md` and `.agents/skills/` are regenerated when the System Workspace
 map or shared conventions change.
 
@@ -40,6 +41,7 @@ Scheduled Runs should produce Candidates and evidence. They should not silently 
 
 ## The bigger picture
 
-Continuous engineering is a composition of bounded primitives: Planner and
-Task Resolver capabilities, isolated Task Workspace execution, explicit
-coordination, durable knowledge promotion, lineage, and separate integration.
+Continuous engineering composes an external Planner/orchestrator with bounded
+`ws` primitives: context composition, isolated Task Workspace execution,
+explicit coordination, result/lineage records, durable knowledge promotion,
+and separate integration.

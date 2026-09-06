@@ -24,7 +24,8 @@ retain separate histories. Their checkouts conventionally live below ignored
 Record each repository’s stable name, workspace-relative `path`, Git `url`,
 role, and relationships in the control-repository manifest. This is a useful
 first System Resource catalog, but it is narrower than the full
-System/Layer/Resource model. Use
+System/Layer/Resource model. In the current CLI, `ws discover` filters
+declared membership; it does not semantically infer related repositories. Use
 `ws repo clone` to materialize a URL-backed checkout, `ws repo add` to register
 an existing checkout, and `ws repo sync [name]` to materialize a missing one.
 Keep each repository’s lifecycle independent; do not use submodules by
@@ -60,10 +61,11 @@ repositories while writing only its declared target.
 
 ## Trade-offs
 
-System context improves orientation and discovery. The reference CLI now has a
+System context improves orientation and discovery. The reference CLI has a
 declaration-only System/Layer/Resource registry and `ws discover`/`ws validate`
-surface; a future System Workspace can extend it with richer lifecycle and
-runtime adapter data. Relationships need owners and can drift from reality.
+surface. A caller-owned resolver may later provide on-demand semantic context
+selection; that is a proposed interface, not a current command. Relationships
+need owners and can drift from reality.
 
 ## Failure modes
 

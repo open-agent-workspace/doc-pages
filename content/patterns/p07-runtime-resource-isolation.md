@@ -41,7 +41,9 @@ Run end → stop process → release port
 
 The reference CLI records these resources under `.workspace/runtime/`, which
 is ignored by the control repository. `ws status` exposes active ownership and
-`ws cleanup` reconciles completed or orphaned Run resources.
+`ws cleanup` reconciles completed or orphaned Run resources. This narrow Run
+resource reconciliation is not Runtime Workspace reconciliation or deployed
+service management.
 
 ## Trade-offs
 

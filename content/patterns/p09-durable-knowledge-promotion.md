@@ -21,7 +21,10 @@ logs and nested repository checkouts do not.
 
 ## Pattern
 
-Classify outputs. Promote durable knowledge, provenance, and decisions into reviewed workspace context; retain telemetry only for its operational lifetime.
+Classify outputs. Promote durable knowledge, provenance, and decisions into
+reviewed System or caller-owned Workstream context; retain telemetry only for
+its operational lifetime. Agent Workspace can preserve a proposal and lineage,
+but the owning policy decides promotion.
 
 Promotion has an intentional ladder rather than one undifferentiated memory:
 
@@ -59,6 +62,7 @@ commit the full process log.
 
 Promotion keeps the knowledge base useful and portable. It requires judgment,
 scope-aware storage, provenance, and a path for correcting stale decisions.
+Planner, Workstream, and global-preference owners remain outside `ws`.
 
 ## Failure modes
 

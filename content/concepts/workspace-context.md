@@ -12,8 +12,10 @@ slug: concepts/workspace-context
 
 Workspace Context is the durable, shared material that Runs can read: policies,
 coding standards, architectural context, repository relationships, and reusable
-skills. In the coding-agent workspace convention, the control repository keeps
-this material in `.workspace/context/`, with generated root `AGENTS.md` and
+skills. It is part of the System Workspace when it describes architecture, and
+may be supplied by a caller-owned Workstream when it describes Task intent.
+In the coding-agent workspace convention, the control repository keeps the
+first category in `.workspace/context/`, with generated root `AGENTS.md` and
 workspace skills under `.agents/skills/` providing the driver agent’s entry
 point.
 
@@ -29,11 +31,15 @@ the workspace project root.
 The interactive driver reads the generated `AGENTS.md` and `.agents/skills/`
 from the control repository. A bounded `ws run` receives the selected context
 repositories and workspace context needed for one mutation, but does not write
-back to the control repository or context-only checkouts.
+back to the control repository or context-only checkouts. The current
+`ws discover` capability filters declared membership; a caller may later add a
+semantic/on-demand resolver, but that is not a current command or promise.
 
 ## Shared or private?
 
-Context is shared and reviewable. A Run’s unverified discovery is private until it becomes a Knowledge Proposal and is promoted.
+System context is shared and reviewable. A Run’s unverified discovery is
+private until it becomes a Knowledge Proposal and is promoted by the owning
+caller or System Workspace policy.
 
 ## Default implementation
 

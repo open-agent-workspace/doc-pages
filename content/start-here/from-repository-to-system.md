@@ -34,7 +34,8 @@ Git URLs, shared policies, generated skills, and durable architectural
 context. It can answer “what else should this Run know about?” without
 pretending the repositories are one atomic history. `ws repo clone` and `ws
 repo sync` make URL-backed checkouts reproducible while leaving their Git
-boundaries intact.
+boundaries intact. The current `ws discover` command filters declared
+membership; it does not perform semantic search or infer all dependencies.
 
 ## What it does not add
 
@@ -43,9 +44,12 @@ A workspace does not create an atomic multi-repository transaction. If a change 
 ## Driver and bounded Run
 
 Start the interactive driver at the workspace root. It uses the generated
-`AGENTS.md` and `.agents/skills/` to select context and invoke `ws run`. The
-bounded Run starts in an isolated worktree for the one write target; its
-context repositories are read-only snapshots for that Run.
+`AGENTS.md` and `.agents/skills/` to select context and invoke `ws run`. A
+caller can provide a direct objective without first creating a separate Task
+object. The bounded Run starts in an isolated worktree for the one write
+target; its context repositories are selected snapshots for that Run, with
+workflow-level checks against mutation rather than an enforceable filesystem
+read-only boundary.
 
 ## A practical rule
 

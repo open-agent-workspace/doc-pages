@@ -13,8 +13,10 @@ slug: concepts/workspace
 A Workspace is a general term, not one lifecycle boundary. Use [Workspace
 Scopes](workspace-scopes) to distinguish the durable System Workspace,
 Workstream intent, disposable Task Workspace, and canonical Runtime
-Workspace. In the reference convention, the Git-managed control repository
-is the practical root for the System Workspace and interactive driver.
+Workspace. These scopes can be owned by different systems; a four-directory
+setup is optional. In the reference convention, the Git-managed control
+repository is the practical root for the System Workspace and interactive
+driver.
 
 ## Why it exists
 
@@ -54,9 +56,9 @@ from `origin`. `ws generate` refreshes the root `AGENTS.md` and
 promoted back into the control repository. `ws repo sync [name]` explicitly
 materializes missing URL-backed checkouts and leaves existing ones unchanged.
 The control repository can outlive any particular Run. It currently combines
-most System Workspace material with the V1 driver entry point; Workstream and
-canonical Runtime Workspace are documented architectural scopes that the
-reference CLI does not fully implement yet.
+most System Workspace material with the V1 driver entry point. Workstream
+intent, Planner/loop state, and canonical Runtime Workspace remain owned by
+callers or external runtime systems.
 
 ## Driver and bounded Run contexts
 
@@ -76,8 +78,8 @@ private to a Task Workspace or Run.
 
 Relationships, policies, and promoted knowledge are durable. Processes,
 allocated Runtime Resources, and active Run state are execution concerns. Do
-not confuse those temporary concerns with the separate Runtime Workspace that
-will describe canonical deployed state.
+not confuse those temporary concerns with the separate Runtime Workspace
+owned by a runtime system and describing canonical deployed state.
 
 ## Default implementation
 

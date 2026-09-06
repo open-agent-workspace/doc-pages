@@ -1,17 +1,22 @@
 # Agentic Engineering Workspace Documentation
 
-An implementation-independent field guide for building true coding-agent
-workspaces where agents can work safely, concurrently, and continuously.
+An implementation-independent field guide for helping coding agents understand
+and work across independent repositories with shared context, narrow mutation
+boundaries, and durable results.
 
 The site is Markdown-first and statically generated. The `content/` tree is the source of truth; `site/` is the generated GitHub Pages artifact.
 
 The architecture is intentionally independent of any particular CLI. The
-recommended physical convention is a Git-managed workspace control repository
-opened as the coding agent’s project root. Independently Git-managed
-repositories are checked out below its ignored `repos/` directory. In the
-dogfood checkout, this repository is therefore expected at
+recommended physical convention is a Git-managed System Workspace control
+repository opened as the coding agent’s project root. Independently
+Git-managed repositories are checked out below its ignored `repos/` directory.
+In the dogfood checkout, this repository is therefore expected at
 `repos/doc-pages/`, alongside `repos/reference-implmentation/` and
 `repos/example-workspace/`.
+
+Read [Product Design](content/start-here/product-design.md) for the product
+boundary and [Implementation Plan](content/reference/implementation-plan.md)
+for phased work, ownership, repository reuse, and acceptance evidence.
 
 ## Local development
 

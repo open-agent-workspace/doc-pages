@@ -10,7 +10,9 @@ slug: concepts/intent
 
 ## Definition
 
-Intent is a concise statement of what a Run is trying to change, which scope it expects to touch, and what conflict signals matter.
+Intent is a concise Task or Run statement describing the objective, expected
+scope, constraints, and conflict signals. Task intent is durable and
+caller-owned; Run intent describes the current bounded attempt.
 
 ## Why it exists
 

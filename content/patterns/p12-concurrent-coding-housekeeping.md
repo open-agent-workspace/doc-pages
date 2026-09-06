@@ -14,14 +14,16 @@ Product work and maintenance happen together, but maintenance must not disturb a
 
 ## Context
 
-Interactive coders, dependency maintainers, and resource housekeepers operate
-in the same Git control-repository workspace. The interactive driver stays at
-the root while every role receives its own bounded Run and managed-repository
-worktree.
+Interactive coders, dependency maintainers, and resource housekeepers may use
+the same System Workspace context. A caller or external orchestrator owns
+roles, goals, and schedules; every role receives its own bounded Run and
+managed-repository worktree.
 
 ## Pattern
 
-Share workspace context and coordination signals. Give each role a separate Run, worktree, resource set, and Candidate lifecycle.
+Share System context and coordination signals. Give each role a separate Task,
+Run, worktree, Runtime Resource set, and Candidate lifecycle. Do not make
+`ws` the scheduler or runtime authority.
 
 ## Diagram
 

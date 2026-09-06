@@ -22,9 +22,10 @@ Task Workspace     → disposable execution
 Runtime Workspace  → canonical deployed state
 ```
 
-The scopes can be materialized in different directories or services. A local
-Git control repository is a practical V1 implementation of the System
-Workspace; it is not the definition of all four scopes.
+The scopes can be materialized in different directories or services. They are
+ecosystem vocabulary, not a requirement to create four directories for every
+installation. A local Git control repository is a practical V1 implementation
+of the System Workspace; it is not the definition of all four scopes.
 
 ## System Workspace
 
@@ -38,10 +39,10 @@ The System Workspace answers:
 It is durable and long-lived. A useful shape is `systems.yaml`,
 `layers.yaml`, `resources.yaml`, `repos.yaml`, contracts, policies, decisions,
 and shared knowledge. The existing Git control repository and its durable
-`.workspace/context/` plus the declaration-only `system/` registries are the
-reference implementation’s current slice of this scope. The CLI can discover,
-validate, and report this topology without launching or reconciling runtime
-adapters.
+`.workspace/context/` plus the optional declaration-only `system/` registries
+are the reference implementation’s current slice of this scope. The CLI can
+validate and report declared topology and filter declared membership without
+launching runtime adapters. It does not infer semantic relationships.
 
 ## Workstream
 
@@ -62,9 +63,10 @@ workstreams/agent-platform/
 └── history/
 ```
 
-The Planner primarily operates here. Detailed plans for one execution may
-remain private to its Task Workspace, while the Workstream plan remains the
-canonical statement of what should happen next.
+The caller, Planner, or workflow system primarily operates here. Detailed
+plans for one execution may remain private to its Task Workspace, while the
+Workstream plan remains the canonical statement of what should happen next.
+Agent Workspace consumes a Task and does not own the Workstream.
 
 ## Task Workspace
 
@@ -84,8 +86,9 @@ Workstream goal + System model
 ```
 
 The current reference CLI’s bounded Run and per-Run Git worktree implement
-important parts of this scope. The filesystem is disposable; its result,
-lineage, and promoted learning are not.
+important parts of this scope. Agent Workspace owns composition and execution
+boundaries; the caller owns durable Task intent. The filesystem is disposable;
+its result and lineage are not.
 
 ## Runtime Workspace
 
@@ -94,20 +97,22 @@ which services, jobs, infrastructure, and runtime agents should exist and
 which revisions are deployed. It is distinct from a Task Workspace’s temporary
 ports, processes, logs, and worktrees.
 
-PM2, Docker Compose, and Git/FS are possible runtime adapters. They translate
-the canonical model into local mechanisms. The reference CLI does not yet
-implement a full Runtime Workspace or claim `start`, `stop`, `reconcile`, or
-`deploy` for it.
+PM2, Docker Compose, and Git/FS are possible runtime adapters owned by a
+runtime system such as LocalLink. They translate canonical deployed state
+into local mechanisms. Agent Workspace does not own this scope or claim
+`start`, `stop`, `reconcile`, or `deploy` for it.
 
 ## Planner and Task Resolver
 
-Planner is a capability, not another mandatory application. It reads a
-Workstream goal, plan, recent history, and System Workspace model; it proposes
-the next task and updates durable Workstream intent. The Task Resolver then
-selects relevant systems, layers, and resources and composes a Task Workspace.
+Planner is a caller-owned capability, not a mandatory Agent Workspace
+application. It may read a Workstream goal, plan, recent history, and System
+Workspace model; propose a Task; and update durable Workstream intent. A
+caller-owned Task Resolver may select relevant Systems, Layers, and Resources
+before asking Agent Workspace to compose and execute the Task Workspace.
 
 ```text
-Planner → Workstream intent → Task Resolver → Task Workspace → Agent
+Caller Planner → Task intent → caller/Agent Workspace resolver → Task Workspace → Agent
 ```
 
-This keeps planning durable even after a Task Workspace is removed.
+This keeps planning durable even after a Task Workspace is removed without
+making `ws` the owner of planning or loop state.

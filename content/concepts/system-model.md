@@ -10,8 +10,8 @@ slug: concepts/system-model
 
 ## The three-part model
 
-The System Workspace should describe architecture explicitly rather than make
-an agent infer it from sibling directories:
+The optional System Workspace registry describes architecture explicitly rather
+than making an agent infer it from sibling directories:
 
 ```text
 System   = why does this resource exist?
@@ -76,6 +76,9 @@ conflicts visible even when Git worktrees have no textual merge conflict.
 
 The current reference implementation supports declaration-only
 `system/systems.yaml`, `system/layers.yaml`, `system/resources.yaml`, and
-`system/repos.yaml` registries. `ws discover`, `ws validate`, and topology
-status can inspect this model without runtime adapters. Planner, Task Resolver,
-and deployed Runtime Workspace adapters remain later capabilities.
+`system/repos.yaml` registries. `ws validate` and topology status inspect the
+declarations; `ws discover` currently filters declared membership by fields
+such as System, Layer, or kind. It is not semantic search or automatic
+dependency inference. On-demand context resolution is a proposed interface,
+not a current command. Planner, caller-owned Task Resolver logic, and deployed
+Runtime Workspace adapters remain external capabilities.

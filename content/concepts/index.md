@@ -32,20 +32,22 @@ The patterns use a compact set of terms. Each term describes a boundary, a lifec
 | Candidate | A proposed result awaiting validation or integration. |
 | Event | Durable provenance or engineering history. |
 | Knowledge Proposal | A suggestion to promote a discovery or decision into shared knowledge. |
-| Resource | A runtime dependency such as a port, process, service, or namespace. |
 | Integration | Validation and promotion of a Candidate into canonical history. |
 
 ## A lifecycle view
 
 ```text
-System model + Workstream intent → Planner → Task Resolver → Task Workspace
-                                                        ↓
-                                                       Run → Candidate → Integration
-                                                        ↓
-                                             lineage + learning promotion
+System model + caller objective → context selection → Task Workspace
+                                                   ↓
+                                                  Run → Candidate → Integration
+                                                   ↓
+                                            result + durable lineage
 ```
 
-The vocabulary is intentionally implementation-independent. A local SQLite coordinator, a daemon, or an external scheduler can expose the same conceptual objects.
+The vocabulary is intentionally implementation-independent. Agent Workspace
+owns the repository/context and bounded-execution path; callers may own Task
+intent and loops, while runtime owners expose deployed state. A local SQLite
+coordinator, a daemon, or an external scheduler can expose compatible objects.
 
 ## Read next
 

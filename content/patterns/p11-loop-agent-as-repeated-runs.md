@@ -15,14 +15,15 @@ Long-lived processes accumulate stale state, are hard to recover, and make owner
 ## Context
 
 An agent needs to continue a multi-step objective across time or triggers. The
-loop definition belongs to a durable Workstream; each execution may use a new
-disposable Task Workspace.
+loop definition belongs to a caller-owned Workstream or orchestrator; each
+execution may use a new disposable Task Workspace.
 
 ## Pattern
 
-Represent the loop as repeated bounded Runs. Each Run reads Workstream goal,
-plan, state, and history; performs one safe slice in a Task Workspace; and
-writes the next semantic checkpoint back to the Workstream.
+Represent the loop as repeated bounded Runs. The external owner supplies each
+Task’s goal and constraints; each Run performs one safe slice in a Task
+Workspace and returns a result/lineage record. The owner writes the next
+semantic checkpoint to its Workstream state.
 
 ## Diagram
 
@@ -35,8 +36,9 @@ checkpoint → Task 1 / Run 1 → checkpoint → Task 2 / Run 2 → …
 ## Example
 
 An upgrade loop records packages inspected, blockers, and next action in its
-Workstream state. A later Planner/Task Resolver invocation resumes from that
-durable state in a fresh Task Workspace and managed-repository worktree.
+external Workstream state. A later orchestrator invocation supplies the next
+Task to `ws`, which executes it in a fresh Task Workspace and
+managed-repository worktree.
 
 ## Trade-offs
 
@@ -50,7 +52,8 @@ The next Run cannot tell completed from pending work, or a checkpoint is treated
 
 ## Extension points
 
-Use Git files, SQLite, a queue, or a workflow engine for checkpoints.
+Use Git files, SQLite, a queue, or a workflow engine for checkpoints. These
+are caller/orchestrator choices, not required `ws` features.
 
 ## When not to use
 
