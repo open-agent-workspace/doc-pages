@@ -84,20 +84,34 @@ registry optional; an existing repository manifest remains a valid setup.
 mandatory four-directory setup or that `ws` owns Planner, schedules, loops,
 retries, budgets, or runtime lifecycle.
 
-### P1 — Real multi-repository discovery pilot
+### P1 — Agent Workspace self-dogfood discovery pilot
 
 **Owner:** reference implementation maintainer. **Dependencies:** D0.
 
-Pilot with a second **real application spanning multiple repositories**, not
-only the fixture. Establish one metadata authority for repository identity and
-relationships. Exercise declared System/Layer/Resource membership and
-on-demand context selection at the interface level. Compose selected-only read
-snapshots and one writable repository with explicit write limits. An
-unavailable unrelated repository must not block a task that did not select it.
+Use Agent Workspace itself as the first real multi-repository project: the
+`open-agent-workspace/doc-pages` contract, the
+`open-agent-workspace/reference-implmentation` reference implementation, the
+optional `open-agent-workspace/example-workspace` fixture, and the local
+dogfood control workspace. A second real application spanning multiple
+repositories is a later generalisation, not a prerequisite for this phase.
+Establish one metadata authority for repository identity and relationships.
+Exercise declared System/Layer/Resource membership and on-demand context
+selection at the interface level. Compose selected-only read snapshots and one
+writable repository with explicit write limits. An unavailable unrelated
+repository must not block a task that did not select it.
+
+The first concrete scenario is: **“A bounded task must not fail because an
+unrelated registered repository is unavailable.”** The agent receives the
+objective, the workspace entrypoint, and read/write permissions—not an
+expected repository or file list. Discovery should trace the docs contract to
+the reference implementation and its tests, use the example fixture only when
+useful, and include root metadata as context. The agent writes the reference
+implementation only after explicit selection and approval; any later docs
+change is a separate Candidate, not an implicit side effect of discovery.
 
 Ordered work items:
 
-1. Inventory the application’s repositories, contracts, and ownership; keep
+1. Inventory Agent Workspace’s repositories, contracts, and ownership; keep
    `.workspace/workspace.yaml` as the canonical identity/path/URL mapping for
    existing product repositories, and record System Resource references by
    those repository IDs.
@@ -112,19 +126,27 @@ Ordered work items:
 5. Verify that expanding read context never expands write permissions: the
    selected mutation target remains the only writable target, even though the
    current context-only filesystem boundary is checked after execution.
-6. Remove or make unavailable an unrelated repository and repeat the task;
-   selected-only materialization must still succeed.
+6. Use a safe temporary fixture or temporary checkout omission to simulate an
+   unavailable checkout for an unrelated registered repository and repeat the
+   task. Keep the registration intact; never remove, rename, or damage a live
+   managed repository. Selected-only materialization must still succeed.
 
 **Acceptance evidence:**
 
-- An objective without a prescribed repository list can use the proposed
-  context-selection interface to identify a declared related
-  contract/repository and produce an inspectable selection reason. This is an
-  aspirational pilot acceptance criterion, not a claim about today’s
+- The self-dogfood objective without a prescribed repository list can use the
+  proposed context-selection interface to identify the declared docs contract,
+  reference implementation/test, optional fixture, and root metadata, with an
+  inspectable discovery trace, selection reasons, and selected revisions. This
+  is an aspirational pilot acceptance criterion, not a claim about today’s
   membership-filtering command.
 - A task can select one mutation repository while reading several independent
   repositories.
 - An unavailable, unrelated repository does not fail the task.
+- The baseline limitation—that the current snapshot path reads every
+  registered checkout before selected context is materialized—is recorded. The
+  target regression result is selected-only materialization, followed by
+  Candidate validation; this plan does not claim that this scenario has already
+  been executed or completed.
 - Context-only snapshots are not writable by the Run workflow and unrelated
   repositories are not materialized merely because they exist in a broad
   workspace. The current context-only worktrees are Git workflow isolation
@@ -142,14 +164,27 @@ Proposed selection/materialization exchange (not a current CLI command):
 
 ```yaml
 request:
-  objective: align API response with the client contract
-  allowed_read: [client-contract, api, deployment]
-  allowed_write: [api]
+  objective: A bounded task must not fail because an unrelated registered repository is unavailable.
+  workspace_entrypoint: dogfood-workspace
+  allowed_read:
+    - open-agent-workspace/doc-pages
+    - open-agent-workspace/reference-implmentation
+    - open-agent-workspace/example-workspace
+    - dogfood-workspace
+  allowed_write:
+    - open-agent-workspace/reference-implmentation
 result:
-  selected: [client-contract, api]
-  reasons: ["client-contract declares the response shape"]
-  system_revision: c319efa
-  materialization: selected snapshots + writable api worktree
+  selected:
+    - open-agent-workspace/doc-pages
+    - open-agent-workspace/reference-implmentation
+    - local-dogfood-control
+  reasons:
+    - "doc-pages defines the discovery contract"
+    - "reference-implmentation contains the implementation and tests"
+    - "dogfood-workspace supplies the workspace metadata"
+  selected_revisions: "revisions recorded by discovery; no hash is prescribed here"
+  materialization: selected snapshots + writable reference-implmentation worktree
+  approval: explicit caller approval required before writing
 ```
 
 ### P2 — Results, recovery, and minimal consumer interface
@@ -234,11 +269,11 @@ The pilot should demonstrate these cases:
 
 | Case | Expected evidence |
 | --- | --- |
-| Objective without a repository list | Finds the relevant declared contract/repository through context resolution, then keeps the write target narrow. |
-| Unavailable unrelated repository | Task succeeds because it was not selected. |
+| Self-dogfood objective without a repository list | Finds the docs contract, reference implementation/test, optional fixture, and root metadata through context resolution, records trace/reasons/revisions, then keeps the write target narrow. |
+| Self-dogfood unavailable unrelated repository | A safe temporary fixture simulates the missing checkout; the task succeeds because it was not selected. No live managed repository is removed. |
 | Failed/interrupted Run | Durable Run/Candidate state remains inspectable after process exit. |
 | Fresh setup | A new control root can load declarations, validate them, and run the fixture path. |
-| Real second application | A later non-fixture application spanning multiple repositories proves selected context and independent integration boundaries. |
+| Later second application | A separate non-fixture application spanning multiple repositories generalises the self-dogfood result and proves independent integration boundaries. |
 
 The test suite should distinguish declaration membership filtering from future
 semantic discovery and should avoid claiming command behavior that is not
