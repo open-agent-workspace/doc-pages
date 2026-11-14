@@ -288,5 +288,16 @@ histories; nested references detect cycles and missing members fail gracefully.
 
 The [composition design](composable-workspaces-design) records the assessment,
 ADR, data model, and follow-up gates for task-scoped context/skills and
-caller-linked member Runs. Those later gates are not implemented dispatch or a
-new scheduler. See the [command reference](composable-workspaces).
+caller-linked member Runs. Scoped context and explicit subtask dispatch are now implemented without a
+new scheduler; see the [execution contract](composition-execution). See the [command reference](composable-workspaces).
+
+### Composition execution acceptance
+
+Phases C/D reuse member profiles, RunOrchestrator, CommandAgentProvider, stores,
+Candidates and integration validation. Selected-only snapshots and profile-scope
+enforcement are implemented prerequisites. Context plans expose source hashes,
+precedence, omitted sources, lazy skills and structured conflicts. Caller-owned
+Task files specify pinned member IDs, dependencies and explicit grants. One
+selected step/attempt is dispatched at a time; deterministic Run IDs, SQLite
+leases and atomic lineage reports support cross-process recovery. Retry budgets,
+scheduling and choosing the next step remain with the caller.

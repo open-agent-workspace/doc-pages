@@ -131,6 +131,7 @@ to start, stop, reconcile, or deploy those systems.
 
 The initial [Composable Workspaces](../concepts/composable-workspaces) capability
 references existing workspaces through stable IDs and local locators, preserving
-their repository/context ownership and standalone workflows. It supports metadata
-inspection and validation; task-scoped context resolution and coordinated
-dispatch remain proposed. Membership access labels do not grant permissions.
+their repository/context ownership and standalone workflows. It supports metadata inspection/validation,
+scoped context resolution and explicit caller-owned subtask dispatch through
+member Runs. Dispatch is not a scheduler and dependencies require integrated
+Candidates. Membership access labels do not grant permissions.

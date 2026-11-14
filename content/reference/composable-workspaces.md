@@ -62,11 +62,19 @@ If a writer is interrupted, verify it has stopped before deleting a stale
 or `.workspace/runtime` data. Synchronize the declaration using the coordinator's
 Git history; resolve conflicts explicitly before using it.
 
-## Implemented limits
+## Scoped context and explicit subtask execution
 
-These commands read manifests only and never start agents or copy member skills.
-The access label grants no authority and is not a filesystem sandbox. Context
-composition, `compose context`, coordinated Task dispatch and aggregate status
-remain proposed in the [design](composable-workspaces-design). Start existing
-bounded Runs inside each member using that member's normal profile and policy.
-See the [worked example](../examples/05-composable-workspaces).
+Phases C and D are implemented through these commands:
+
+```text
+ws compose context --member <alias> --repo <name> [--allow-read <capability> ...]
+ws compose task validate|inspect <file> [--json]
+ws compose task context <file> --step <id> [--json]
+ws compose task run <file> --step <id> [--attempt <n>] [--expect-context <hash>] [--json]
+```
+
+See [Scoped Context and Subtask Dispatch](composition-execution) for the full
+caller-owned YAML schema, grants, instruction precedence, lazy skills,
+integration dependency gates and recovery. Dispatch selects one explicit step;
+it does not schedule dependencies or automatically integrate Candidates.
+Membership labels constrain dispatch but are not an OS permission system.

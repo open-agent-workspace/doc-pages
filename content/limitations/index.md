@@ -66,10 +66,12 @@ Intent can lower the probability of routine collisions. It cannot determine whet
 
 Treat each limitation as an extension seam. Pick a stronger provider, add a policy, or keep the simpler default when its trade-off is appropriate. A limitation is not a failure of the pattern; it is part of its contract.
 
-## Composition is currently reference-only
+## Composition execution boundaries
 
-`ws compose` supports independent workspace references, nested inspection, cycle
-validation, missing-member diagnostics and safe removal/relocation. It does not
-load member instructions or skills, start coordinated agents, enforce access
-labels as OS permissions, or aggregate Task status. See the
-[composition design](../reference/composable-workspaces-design) for follow-ups.
+Composition now supports scoped instruction/context resolution, lazy skill
+selection and explicit caller-owned subtask dispatch through isolated member Runs.
+It does not schedule work, automatically retry/integrate, merge Git histories,
+detect arbitrary natural-language contradictions or enforce OS filesystem
+sandboxing. Read-only members cannot be dispatched by the mutating Run path.
+Offline status is explicitly stale and cannot satisfy integration dependencies.
+See the [execution contract](../reference/composition-execution).

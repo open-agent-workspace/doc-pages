@@ -51,19 +51,22 @@ non-cyclic descendants are valid. Newly added or relocated subtrees must validat
 
 ## Access and execution boundaries
 
-`access` defaults to `read-only` and describes an intended future dispatch ceiling.
+`access` defaults to `read-only` and describes the composition dispatcher write ceiling.
 It grants no OS permissions and does not authorize modification or agent startup.
-The implemented feature manages declarations only. Existing member `ws run`
+Explicit Task dispatch intersects this membership ceiling with task grants and member profile policy. Existing member `ws run`
 commands continue independently, with one mutation repository and one Candidate
 per Run. Git histories and integration policies remain independent.
 
-Task-scoped instruction/skill resolution and composition dispatch are planned.
-They must preserve native precedence, lazy skill discovery, explicit read/write
-grants and separate member execution contexts. A parent Task can already supply
+Task-scoped instruction/skill resolution and explicit subtask dispatch are
+implemented. They preserve scoped instruction provenance, lazy skill discovery,
+explicit read/write grants and separate member execution contexts. A parent Task can already supply
 correlation through ordinary Run `--intent`; `ws` does not own its schedule,
-retries or aggregate status.
+or retries. The CLI provides observational aggregate execution status.
 
 See the [command reference](../reference/composable-workspaces),
 [design and plan](../reference/composable-workspaces-design),
 [ADR-018](../decisions/adr-018-composable-workspaces), and
 [multi-application example](../examples/05-composable-workspaces).
+
+See the [execution contract](../reference/composition-execution) for task files,
+explicit attempts, integration gates and recovery.

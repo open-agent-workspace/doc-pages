@@ -214,5 +214,6 @@ the documentation can be checked with `npm run check` in `doc-pages`.
 ## Composable workspaces
 
 Use the [composition CLI](composable-workspaces) to reference existing workspaces.
-The [assessment and phased plan](composable-workspaces-design) distinguishes
-implemented metadata/discovery from planned scoped context and dispatch.
+The [assessment and phased plan](composable-workspaces-design) records the
+assessment and implemented scope. See [execution](composition-execution) for
+scoped context, caller-owned Task files, grants and recoverable member Runs.
