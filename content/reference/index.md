@@ -20,7 +20,7 @@ separate `@agentic-workspace/core` and `@agentic-workspace/cli` packages:
 | Workstream | Caller-owned Task intent; not a first-class `ws` object |
 | Task Workspace (V1 slice) | Per-Run Git worktree, selected repository snapshots, context files, and runtime working state |
 | Runtime Workspace | Not implemented as canonical deployed state |
-| System / Layer / Resource catalog | Optional declaration-only `system/*.yaml` registries; `ws discover` filters declared membership, while `ws validate` and topology status inspect it |
+| System / Layer / Resource / Dependency catalog | Optional declaration-only `system/*.yaml` registries; `ws discover` filters declared membership, `ws dependencies` queries repository/module edges, while `ws validate` and topology status inspect them |
 | Planner / Task Resolver | External capabilities; the interactive driver and explicit CLI options provide a narrower flow |
 | Bounded Run | `RunOrchestrator` and SQLite run record |
 | Isolated Run | `GitWorktreeExecutionProvider` |
@@ -54,9 +54,10 @@ Runtime Workspace  → canonical deployed state
 ```
 
 The reference CLI currently implements the System Workspace as a Git control
-repository plus optional declaration-only System/Layer/Resource registries.
-`ws discover` filters declared membership; `ws validate` and topology status
-inspect declarations. It implements Task execution as bounded Runs with
+repository plus optional declaration-only System/Layer/Resource/Dependency
+registries. `ws discover` filters declared membership, `ws dependencies`
+queries repository/module edges, and `ws validate` and topology status inspect
+declarations. It implements Task execution as bounded Runs with
 isolated worktrees and a narrow Runtime Resource allocator for ports/processes.
 It does not claim a Planner, Task Resolver, or canonical Runtime Workspace.
 

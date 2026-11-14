@@ -31,11 +31,13 @@ The distinction keeps the write boundary reviewable. Related repositories can re
 
 The workspace control repository can record repository relationships, paths,
 Git URLs, shared policies, generated skills, and durable architectural
-context. It can answer “what else should this Run know about?” without
+context. Its dependency graph can answer “what else should this Run know
+about?” without
 pretending the repositories are one atomic history. `ws repo clone` and `ws
 repo sync` make URL-backed checkouts reproducible while leaving their Git
 boundaries intact. The current `ws discover` command filters declared
-membership; it does not perform semantic search or infer all dependencies.
+membership, and `ws dependencies` queries reviewed repository/module edges; it
+does not perform semantic search or infer all dependencies.
 
 ## What it does not add
 

@@ -18,6 +18,7 @@ load every checkout.
 The product owns:
 
 - repository and shared-context discovery;
+- declared repository and module dependency discovery;
 - composing the smallest useful context for a task;
 - bounded agent execution with explicit write limits;
 - result and Candidate records;
@@ -41,7 +42,7 @@ an atomic multi-repository transaction.
 ```text
 user objective
       ↓
-ws discovers declared context and repository relationships
+ws discovers declared context, relationships, and dependencies
       ↓
 compose disposable Task Workspace
       ↓
@@ -80,6 +81,9 @@ Caller Task ───┘                                             ↓
 - **Resource** answers what exists: a repository, service, MCP, skill, script,
   job, UI, contract, or capability. An allocated port or process is a
   **Runtime Resource**, a narrower execution concern.
+- **Dependency** answers which resource or module relies on another. It is a
+  directed, reviewable relationship in the System model; it is not a promise
+  that `ws` can infer every package-manager or runtime dependency.
 - **Task** is durable intent owned by the caller. It can reference a goal,
   requested scope, constraints, and expected result.
 - **Run** is one bounded attempt to execute a Task.
@@ -88,11 +92,12 @@ Caller Task ───┘                                             ↓
 
 ## Discovery is progressive, not speculative
 
-The System Workspace may provide explicit membership and relationships so an
-agent can ask for relevant repositories and context without guessing from
-directory shape. The current `ws discover` surface filters declared
-membership by supported fields such as System, Layer, or kind; it is not
-semantic search and does not infer a complete dependency graph.
+The System Workspace may provide explicit membership, dependency edges, and
+relationships so an agent can ask for relevant repositories and context
+without guessing from directory shape. The current `ws discover` surface
+filters declared membership by supported fields such as System, Layer, or
+kind, while `ws dependencies` reads the declared repository/module graph. It
+is not semantic search and does not infer a complete dependency graph.
 
 A proposed later interface is on-demand context discovery: resolve a Task’s
 declared need to relevant Resources, explain why each was selected, and let a
@@ -126,6 +131,8 @@ to start, stop, reconcile, or deploy those systems.
 4. Preserve lineage when execution files disappear.
 5. Make external ownership explicit instead of growing a competing planner,
    scheduler, or runtime control plane.
+6. Keep navigation metadata reviewable and separate from generated dependency
+   inference.
 
 ## Compose independently owned workspaces
 

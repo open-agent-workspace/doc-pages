@@ -76,9 +76,16 @@ second source of truth during the transition.
 **Owner:** docs + implementation maintainers. **Dependencies:** none.
 
 Define the Task, Run, Candidate, System, Layer, Resource, Runtime Resource,
-and four-scope vocabulary. Record the interface boundary for caller-owned
+Dependency, and four-scope vocabulary. Record the interface boundary for caller-owned
 intent and external runtime ownership. Keep the declaration-only System
 registry optional; an existing repository manifest remains a valid setup.
+
+The System model also includes an optional `system/dependencies.yaml` registry.
+Its directed edges connect registered repositories or repository-relative
+modules, so context selection can follow reviewed relationships without
+requiring semantic inference. Repository identity remains owned by
+`.workspace/workspace.yaml`; dependency edges reference those names rather
+than duplicating URLs and paths.
 
 **Acceptance:** docs describe one clear product boundary; no page implies a
 mandatory four-directory setup or that `ws` owns Planner, schedules, loops,
@@ -111,14 +118,16 @@ change is a separate Candidate, not an implicit side effect of discovery.
 
 Ordered work items:
 
-1. Inventory Agent Workspace’s repositories, contracts, and ownership; keep
+1. Inventory Agent Workspace’s repositories, contracts, dependencies, and ownership; keep
    `.workspace/workspace.yaml` as the canonical identity/path/URL mapping for
    existing product repositories, and record System Resource references by
    those repository IDs.
-2. Declare the smallest useful System/Layer/Resource relationships and validate
-   links before running an agent. Reject duplicated mappings that can drift;
+2. Declare the smallest useful System/Layer/Resource relationships and
+   repository/module dependency edges, then validate links before running an
+   agent. Reject duplicated mappings that can drift;
    if duplicates exist, propose a migration without changing stable IDs.
-3. Define the proposed selection/materialization boundary: selection returns
+3. Define the proposed selection/materialization boundary: dependency-aware
+   selection returns
    resource IDs, reasons, revisions, and constraints; materialization turns
    only approved selections into read snapshots and one writable worktree.
 4. Exercise direct objective input with no prescribed repository list. The
@@ -141,6 +150,11 @@ Ordered work items:
   membership-filtering command.
 - A task can select one mutation repository while reading several independent
   repositories.
+- A developer or agent can query repository-level and module-level dependency
+  edges in either direction without materializing every registered checkout.
+- Dependency endpoints reference registered repositories, reject escaping
+  module paths, and remain declaration metadata rather than inferred package
+  manager state.
 - An unavailable, unrelated repository does not fail the task.
 - The baseline limitation—that the current snapshot path reads every
   registered checkout before selected context is materialized—is recorded. The
@@ -272,12 +286,12 @@ The pilot should demonstrate these cases:
 | Self-dogfood objective without a repository list | Finds the docs contract, reference implementation/test, optional fixture, and root metadata through context resolution, records trace/reasons/revisions, then keeps the write target narrow. |
 | Self-dogfood unavailable unrelated repository | A safe temporary fixture simulates the missing checkout; the task succeeds because it was not selected. No live managed repository is removed. |
 | Failed/interrupted Run | Durable Run/Candidate state remains inspectable after process exit. |
-| Fresh setup | A new control root can load declarations, validate them, and run the fixture path. |
+| Fresh setup | A new control root can load declarations, validate them, query dependency edges, and run the fixture path. |
 | Later second application | A separate non-fixture application spanning multiple repositories generalises the self-dogfood result and proves independent integration boundaries. |
 
-The test suite should distinguish declaration membership filtering from future
-semantic discovery and should avoid claiming command behavior that is not
-implemented.
+The test suite should distinguish declaration membership filtering and
+dependency-edge queries from future semantic discovery and should avoid
+claiming command behavior that is not implemented.
 
 ## Reference-only workspace composition
 

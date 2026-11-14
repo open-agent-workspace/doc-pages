@@ -33,7 +33,7 @@ agentic-workspace-reference-implementation/  (pnpm workspace)
 └─ @agentic-workspace/core                    reusable workspace engine
    ├─ src/index.ts                            public export boundary
    ├─ workspace.ts                            manifest, repository, and profile model
-   ├─ system.ts                               System/Layer/Resource registry discovery
+   ├─ system.ts                               System/Layer/Resource/Dependency registry discovery
    ├─ run.ts                                  bounded Run lifecycle and Candidate creation
    ├─ store.ts                                local SQLite operational state
    ├─ git.ts                                  Git inspection and command helpers
@@ -60,7 +60,7 @@ core contracts and may be replaced without changing the command surface.
 | Need | Start here | Then follow |
 | --- | --- | --- |
 | Add or change a `ws` command | `packages/cli/src/cli.ts` | `args.ts`, `output.ts`, then the matching core export and CLI test. |
-| Change workspace or repository discovery | `packages/core/src/workspace.ts` | `system.ts` for declared topology and `packages/core/tests/workspace.test.ts`. |
+| Change workspace, repository, or dependency discovery | `packages/core/src/workspace.ts` and `packages/core/src/system.ts` | `packages/core/tests/system.test.ts` plus the relevant workspace tests. |
 | Change Run, Candidate, or recovery behavior | `packages/core/src/run.ts` | `store.ts`, the relevant provider, and `packages/core/tests/run.test.ts`. |
 | Replace an infrastructure concern | `packages/core/src/providers/contracts.ts` | The matching provider implementation and its focused test. |
 

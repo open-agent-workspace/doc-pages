@@ -52,6 +52,31 @@ include:
 Resources should have stable identity, kind, ownership, lifecycle, relations,
 and (where relevant) the systems and layers they serve.
 
+## Dependencies connect resources and modules
+
+A **Dependency** is a directed relationship from a source endpoint to a target
+endpoint. Each endpoint names a registered repository and may optionally name
+a repository-relative module path. The edge means “the source depends on the
+target”; it can describe imports, build inputs, documentation, deployment,
+data, or another deliberately named relationship.
+
+```yaml
+version: 1
+dependencies:
+  - id: cli-imports-core
+    from: { repository: reference, module: packages/cli }
+    to: { repository: reference, module: packages/core }
+    kind: imports
+    required: true
+```
+
+Dependencies are durable navigation metadata, not package-manager lockfiles.
+They should be added or updated with the same review as the architecture they
+describe. A repository-level endpoint lets a developer see the system at a
+high level; module-level endpoints let an agent narrow the context before it
+opens a large checkout. Incoming and outgoing views make the direction
+explicit.
+
 ## Runtime Resources are a separate term
 
 A **Runtime Resource** is an allocated instance needed by an active Task or
@@ -75,10 +100,12 @@ model used to compose a Task Workspace. This makes stale context and semantic
 conflicts visible even when Git worktrees have no textual merge conflict.
 
 The current reference implementation supports declaration-only
-`system/systems.yaml`, `system/layers.yaml`, `system/resources.yaml`, and
-`system/repos.yaml` registries. `ws validate` and topology status inspect the
-declarations; `ws discover` currently filters declared membership by fields
-such as System, Layer, or kind. It is not semantic search or automatic
-dependency inference. On-demand context resolution is a proposed interface,
-not a current command. Planner, caller-owned Task Resolver logic, and deployed
-Runtime Workspace adapters remain external capabilities.
+`system/systems.yaml`, `system/layers.yaml`, `system/resources.yaml`,
+`system/repos.yaml`, and `system/dependencies.yaml` registries. `ws validate`
+and topology status inspect the declarations; `ws discover` filters declared
+membership by fields such as System, Layer, or kind, and `ws dependencies`
+queries dependency edges by repository, module, direction, or kind. It is not
+semantic search or automatic dependency inference. On-demand context
+resolution is a proposed interface, not a current command. Planner,
+caller-owned Task Resolver logic, and deployed Runtime Workspace adapters
+remain external capabilities.

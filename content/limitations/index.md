@@ -30,10 +30,11 @@ coordinate several Candidates and still do not imply an atomic transaction.
 ## Discovery is not semantic search
 
 The current `ws discover` capability filters declared System/Layer/Resource
-membership. It does not infer semantic dependencies, search every repository,
-or guarantee that the best context has been found. On-demand context
-resolution is a proposed interface and must explain selections and tolerate
-unavailable unrelated repositories.
+membership, while `ws dependencies` reads only the explicit dependency
+registry. It does not infer semantic dependencies from package managers,
+search every repository, or guarantee that the best context has been found.
+On-demand context resolution is a proposed interface and must explain
+selections and tolerate unavailable unrelated repositories.
 
 ## Planning and loops are external
 

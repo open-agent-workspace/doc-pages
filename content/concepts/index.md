@@ -18,6 +18,7 @@ The patterns use a compact set of terms. Each term describes a boundary, a lifec
 | System | A responsibility or product boundary in the canonical architecture. |
 | Layer | An architectural role such as capability, knowledge, observability, runtime, or experience. |
 | Resource | Any named thing that exists in the System model. |
+| Dependency | A reviewed directed relationship between repository or module endpoints. |
 | Runtime Resource | An allocated port, process, namespace, or ephemeral service used by a Task or Run. |
 | Repository | Independent Git history, CI, release, and engineering boundary. |
 | Agent Profile | A reusable definition of an engineering role. |
