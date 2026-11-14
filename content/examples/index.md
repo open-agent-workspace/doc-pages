@@ -26,3 +26,8 @@ As complexity increases, the underlying lifecycle stays recognizable: bounded Ru
 The dogfood workspace is the concrete end-to-end example: its control
 repository manages the independent reference implementation, documentation,
 and fixture repositories through the same manifest and CLI lifecycle.
+
+## Existing independent workspaces
+
+[05 — Dashboard, Desktop and ESP32 Workspaces](05-composable-workspaces) shows
+how to compose existing workspaces without migration or repository duplication.

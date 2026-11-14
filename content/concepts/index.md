@@ -52,3 +52,8 @@ coordinator, a daemon, or an external scheduler can expose compatible objects.
 ## Read next
 
 Start with [Workspace Scopes](workspace-scopes) and the [System Model](system-model), then read [Run](run) and [Integration](integration). The more operational terms become useful once you reach the patterns.
+
+## Independent workspace composition
+
+[Composable Workspaces](composable-workspaces) references independently owned
+workspaces without importing their repositories, instructions or skills.

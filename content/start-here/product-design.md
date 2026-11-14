@@ -126,3 +126,11 @@ to start, stop, reconcile, or deploy those systems.
 4. Preserve lineage when execution files disappear.
 5. Make external ownership explicit instead of growing a competing planner,
    scheduler, or runtime control plane.
+
+## Compose independently owned workspaces
+
+The initial [Composable Workspaces](../concepts/composable-workspaces) capability
+references existing workspaces through stable IDs and local locators, preserving
+their repository/context ownership and standalone workflows. It supports metadata
+inspection and validation; task-scoped context resolution and coordinated
+dispatch remain proposed. Membership access labels do not grant permissions.

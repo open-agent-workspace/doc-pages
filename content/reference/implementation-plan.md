@@ -278,3 +278,15 @@ The pilot should demonstrate these cases:
 The test suite should distinguish declaration membership filtering from future
 semantic discovery and should avoid claiming command behavior that is not
 implemented.
+
+## Reference-only workspace composition
+
+The initial slice is implemented: `ws compose` creates, adds, removes, relocates,
+lists, inspects and validates stable references in optional
+`.workspace/composition.yaml`. Members preserve independent identity and Git
+histories; nested references detect cycles and missing members fail gracefully.
+
+The [composition design](composable-workspaces-design) records the assessment,
+ADR, data model, and follow-up gates for task-scoped context/skills and
+caller-linked member Runs. Those later gates are not implemented dispatch or a
+new scheduler. See the [command reference](composable-workspaces).

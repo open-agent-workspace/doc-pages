@@ -210,3 +210,9 @@ its execution, agent, resource, integration, and knowledge providers while
 keeping the same conceptual boundaries. The implementation repository’s own
 tests and the dogfood fixture provide executable verification of the mapping;
 the documentation can be checked with `npm run check` in `doc-pages`.
+
+## Composable workspaces
+
+Use the [composition CLI](composable-workspaces) to reference existing workspaces.
+The [assessment and phased plan](composable-workspaces-design) distinguishes
+implemented metadata/discovery from planned scoped context and dispatch.

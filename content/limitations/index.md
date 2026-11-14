@@ -65,3 +65,11 @@ Intent can lower the probability of routine collisions. It cannot determine whet
 ## What to do with a limitation
 
 Treat each limitation as an extension seam. Pick a stronger provider, add a policy, or keep the simpler default when its trade-off is appropriate. A limitation is not a failure of the pattern; it is part of its contract.
+
+## Composition is currently reference-only
+
+`ws compose` supports independent workspace references, nested inspection, cycle
+validation, missing-member diagnostics and safe removal/relocation. It does not
+load member instructions or skills, start coordinated agents, enforce access
+labels as OS permissions, or aggregate Task status. See the
+[composition design](../reference/composable-workspaces-design) for follow-ups.
